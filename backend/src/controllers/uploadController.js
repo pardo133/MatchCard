@@ -26,6 +26,7 @@ export const upload = multer({
 export async function uploadCardPhoto(req, res) {
   if (!req.file) return res.status(400).json({ message: 'No se recibió ningún archivo' });
 
-  const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  // URL relativa para que el proxy de Vite la sirva en desarrollo
+  const url = `/uploads/${req.file.filename}`;
   res.json({ url, filename: req.file.filename });
 }

@@ -31,6 +31,13 @@ export async function createCromo(req, res, next) {
         rareza:    rareza || 'common',
         imagenUrl: imagenUrl || '',
       });
+    } else if (imagenUrl) {
+      // Si la carta ya existe pero se sube una imagen nueva, actualizarla
+      cromo = await Cromo.findByIdAndUpdate(
+        cromo._id,
+        { $set: { imagenUrl } },
+        { new: true }
+      );
     }
 
     // Añadir al inventario del usuario

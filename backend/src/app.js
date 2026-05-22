@@ -20,7 +20,8 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 
 // Servir fotos subidas públicamente
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+// __dirname = backend/src  →  ../uploads = backend/uploads (donde multer guarda)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/auth',    authRoutes);
 app.use('/api/users',   userRoutes);

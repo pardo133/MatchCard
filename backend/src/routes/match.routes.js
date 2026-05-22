@@ -1,17 +1,22 @@
 import { Router } from 'express';
 import {
-  getMatchesForUser,
+  buscarMatches,
+  proponerMatch,
   getMyMatches,
   updateMatchStatus,
+  getMensajes,
+  confirmarIntercambio,
 } from '../controllers/matchController.js';
 import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
-
 router.use(protect);
 
-router.get('/find', getMatchesForUser);
-router.get('/',     getMyMatches);
-router.put('/:id/status', updateMatchStatus);
+router.get('/buscar',              buscarMatches);
+router.post('/proponer',           proponerMatch);
+router.get('/',                    getMyMatches);
+router.get('/:id/mensajes',        getMensajes);
+router.put('/:id/status',          updateMatchStatus);
+router.post('/:id/confirmar',      confirmarIntercambio);
 
 export default router;

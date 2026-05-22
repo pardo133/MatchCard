@@ -1,290 +1,79 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUserStore } from '../store/userStore';
 
-/* ── Decoraciones holográficas ── */
-const HOLO_DECOS = [
-  { top: '10%', left: '1%',   w: 44, h: 62, rot: -25, delay: '0s'   },
-  { top: '18%', left: '7%',   w: 34, h: 48, rot:  15, delay: '1s'   },
-  { top: '45%', left: '0%',   w: 40, h: 56, rot:  -8, delay: '1.8s' },
-  { top: '65%', left: '4%',   w: 32, h: 46, rot:  22, delay: '0.5s' },
-  { top: '6%',  right: '2%',  w: 42, h: 60, rot:  18, delay: '1.3s' },
-  { top: '28%', right: '0%',  w: 36, h: 52, rot: -14, delay: '0.2s' },
-  { top: '55%', right: '3%',  w: 38, h: 54, rot:   8, delay: '2s'   },
-  { top: '78%', right: '1%',  w: 30, h: 44, rot: -20, delay: '0.7s' },
-];
-
-/* ── Imágenes reales de cartas ── */
-const CATEGORIAS = [
-  {
-    titulo: 'CARTAS DE FÚTBOL',
-    tipo: 'futbol',
-    cartas: [
-      {
-        nombre: 'Erling Haaland',
-        equipo: 'Manchester City',
-        rating: 91,
-        posicion: 'DC',
-        img: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p223094.png',
-        color1: '#1C2C5B', color2: '#98C5E9',
-      },
-      {
-        nombre: 'Mohamed Salah',
-        equipo: 'Liverpool FC',
-        rating: 89,
-        posicion: 'ED',
-        img: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p118748.png',
-        color1: '#C8102E', color2: '#F6EB61',
-      },
-      {
-        nombre: 'Kevin De Bruyne',
-        equipo: 'Manchester City',
-        rating: 91,
-        posicion: 'MC',
-        img: 'https://resources.premierleague.com/premierleague/photos/players/250x250/p61366.png',
-        color1: '#1C2C5B', color2: '#98C5E9',
-      },
-    ],
-  },
-  {
-    titulo: 'CARTAS POKÉMON',
-    tipo: 'pokemon',
-    cartas: [
-      {
-        nombre: 'Charizard',
-        img: 'https://images.pokemontcg.io/base1/4.png',
-      },
-      {
-        nombre: 'Pikachu',
-        img: 'https://images.pokemontcg.io/base1/58.png',
-      },
-      {
-        nombre: 'Mewtwo',
-        img: 'https://images.pokemontcg.io/base1/10.png',
-      },
-    ],
-  },
-  {
-    titulo: 'CARTAS YU-GI-OH',
-    tipo: 'yugioh',
-    cartas: [
-      {
-        nombre: 'Blue-Eyes White Dragon',
-        img: 'https://storage.googleapis.com/ygoprodeck.com/pics/89631139.jpg',
-      },
-      {
-        nombre: 'Dark Magician',
-        img: 'https://storage.googleapis.com/ygoprodeck.com/pics/46986414.jpg',
-      },
-      {
-        nombre: 'Dark Magician Girl',
-        img: 'https://storage.googleapis.com/ygoprodeck.com/pics/38033121.jpg',
-      },
-    ],
-  },
-];
-
-/* ── Carta de fútbol estilo Panini Prizm ── */
-function CartaFutbol({ carta }) {
+/* ─────────────────────────────────────────────
+   SECCIÓN HERO — ilustración CSS de dos personas
+───────────────────────────────────────────── */
+function IlustracionHero() {
   return (
-    <div
-      className="relative overflow-hidden rounded-xl cursor-pointer group"
-      style={{
-        width: 118,
-        aspectRatio: '63/88',
-        background: `linear-gradient(160deg, ${carta.color1} 0%, ${carta.color2}44 100%)`,
-        boxShadow: '0 8px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15)',
-        border: '1px solid rgba(255,255,255,0.2)',
-      }}
-    >
-      {/* Brillo diagonal */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-           style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%)' }} />
+    <div className="relative flex items-end justify-center"
+         style={{ width: 380, height: 280, flexShrink: 0 }}>
 
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 flex justify-between items-center px-2 pt-1.5">
-        <span className="text-[8px] font-black text-white/80 uppercase">{carta.posicion}</span>
-        <span className="text-[10px] font-black text-white" style={{ textShadow: '0 0 8px rgba(255,215,0,0.8)' }}>
-          {carta.rating}
-        </span>
-      </div>
+      {/* Fondo cálido circular */}
+      <div className="absolute inset-0 rounded-full opacity-40 pointer-events-none"
+           style={{
+             background: 'radial-gradient(ellipse at 60% 60%, #f59e0b 0%, #d97706 40%, transparent 70%)',
+             transform: 'scale(1.1)',
+           }} />
 
-      {/* Foto del jugador */}
-      <div className="absolute bottom-0 left-0 right-0 top-4 flex items-end justify-center overflow-hidden">
-        <img
-          src={carta.img}
-          alt={carta.nombre}
-          className="h-full object-contain object-bottom transition-transform duration-300 group-hover:scale-105"
-          style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))' }}
-          onError={e => { e.target.style.display = 'none'; }}
-        />
-      </div>
-
-      {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 px-1.5 pb-1.5 pt-4"
-           style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)' }}>
-        <p className="text-[8px] font-black text-white leading-none truncate">{carta.nombre}</p>
-        <p className="text-[7px] text-white/60 truncate">{carta.equipo}</p>
-      </div>
-
-      {/* Borde dorado en hover */}
-      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-           style={{ boxShadow: 'inset 0 0 0 1.5px rgba(255,215,0,0.5)' }} />
-    </div>
-  );
-}
-
-/* ── Carta Pokémon / Yu-Gi-Oh (imagen real completa) ── */
-function CartaImagen({ carta }) {
-  return (
-    <div
-      className="relative overflow-hidden rounded-xl cursor-pointer group"
-      style={{
-        width: 118,
-        aspectRatio: '63/88',
-        boxShadow: '0 8px 28px rgba(0,0,0,0.4)',
-      }}
-    >
-      <img
-        src={carta.img}
-        alt={carta.nombre}
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        onError={e => { e.target.src = ''; e.target.style.display = 'none'; }}
-      />
-      <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-           style={{ boxShadow: 'inset 0 0 0 2px rgba(255,215,0,0.6)' }} />
-    </div>
-  );
-}
-
-/* ── Sección de categoría ── */
-function SeccionCategoria({ categoria, indice }) {
-  const [activa, setActiva] = useState(0);
-  const carta = categoria.cartas[activa];
-
-  return (
-    <div className="flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="category-title">{categoria.titulo}</span>
-        <button className="w-6 h-6 rounded-full border border-mc-border flex items-center justify-center text-mc-muted hover:border-mc-purple hover:text-mc-purple transition-colors text-xs font-bold">›</button>
-      </div>
-
-      <div className="podium group" style={{ minHeight: 210 }}>
-        <div className="absolute inset-0 rounded-2xl pointer-events-none"
-             style={{ background: 'radial-gradient(ellipse at 50% 25%, rgba(99,102,241,0.3) 0%, transparent 65%)' }} />
-
-        <div className="relative z-10 mt-2"
-             style={{ animation: `float ${3.5 + indice * 0.7}s ease-in-out infinite` }}>
-          {categoria.tipo === 'futbol'
-            ? <CartaFutbol carta={carta} />
-            : <CartaImagen carta={carta} />
-          }
-        </div>
-
-        <div className="flex gap-1.5 mt-4 relative z-10">
-          {categoria.cartas.map((_, i) => (
-            <button key={i} onClick={() => setActiva(i)}
-              className="rounded-full transition-all duration-200"
-              style={{
-                width:  i === activa ? 18 : 6,
-                height: 6,
-                background: i === activa ? '#FFD700' : 'rgba(255,255,255,0.3)',
-              }} />
-          ))}
+      {/* Cartas flotantes */}
+      <div className="absolute animate-float" style={{ top: 10, left: '30%', animationDelay: '0s' }}>
+        <div className="w-14 h-20 rounded-lg shadow-xl flex items-center justify-center text-2xl"
+             style={{ background: 'linear-gradient(135deg, #7c3aed, #4338ca)',
+                      border: '2px solid rgba(255,255,255,0.4)',
+                      boxShadow: '0 0 20px rgba(124,58,237,0.6)' }}>
+          💎
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ── Binder animado ── */
-function Binder() {
-  return (
-    <div className="relative flex-shrink-0" style={{ width: 360, height: 250 }}>
-      <div className="absolute inset-0 rounded-2xl overflow-hidden"
-           style={{ background: 'linear-gradient(135deg, #3730a3, #4338ca)',
-                    boxShadow: '0 20px 60px rgba(67,56,202,0.4)' }}>
-        {/* Anillas */}
-        <div className="absolute left-8 top-0 bottom-0 flex flex-col justify-evenly py-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="w-4 h-4 rounded-full border-[3px] border-white/30"
-                 style={{ background: 'linear-gradient(135deg, #d1d5db, #9ca3af)' }} />
-          ))}
+      <div className="absolute animate-float" style={{ top: 30, left: '50%', animationDelay: '0.7s' }}>
+        <div className="w-10 h-14 rounded-lg shadow-lg flex items-center justify-center text-xl"
+             style={{ background: 'linear-gradient(135deg, #5b21b6, #7c3aed)',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      boxShadow: '0 0 14px rgba(91,33,182,0.5)' }}>
+          ✨
         </div>
-        {/* Páginas */}
-        <div className="absolute left-16 right-4 top-4 bottom-4 grid grid-cols-2 gap-2">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="rounded-xl border border-white/15 flex items-center justify-center"
-                 style={{ background: i === 0 ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)' }}>
-              {i === 0 && (
-                <img
-                  src="https://images.pokemontcg.io/base1/58.png"
-                  alt="Pikachu"
-                  className="w-full h-full object-contain p-1"
-                />
-              )}
-              {i !== 0 && (
-                <div className="w-7 h-7 rounded-full border border-white/15"
-                     style={{ background: 'rgba(255,255,255,0.06)' }} />
-              )}
-            </div>
-          ))}
+      </div>
+      <div className="absolute animate-float" style={{ top: 15, right: '22%', animationDelay: '1.3s' }}>
+        <div className="w-11 h-16 rounded-lg shadow-lg flex items-center justify-center text-xl"
+             style={{ background: 'linear-gradient(135deg, #4338ca, #2563eb)',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      boxShadow: '0 0 14px rgba(67,56,202,0.5)' }}>
+          🔮
         </div>
       </div>
 
-      {/* Carta volando */}
-      <div className="absolute animate-float" style={{ top: -24, right: 28, width: 68, height: 96, animationDelay: '0.6s' }}>
-        <div className="w-full h-full rounded-xl overflow-hidden"
-             style={{ boxShadow: '0 0 24px rgba(255,215,0,0.5), 0 8px 24px rgba(0,0,0,0.4)',
-                      border: '2px solid rgba(255,215,0,0.4)' }}>
-          <img src="https://images.pokemontcg.io/base1/4.png" alt="Charizard" className="w-full h-full object-cover" />
+      {/* Persona 1 — mujer */}
+      <div className="relative flex flex-col items-center z-10 mr-[-20px]">
+        <div className="text-6xl mb-0.5 select-none" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))' }}>
+          👩🏽
         </div>
-        <div className="absolute bottom-[-14px] left-1/2 -translate-x-1/2 text-xl font-black"
-             style={{ color: '#06b6d4', filter: 'drop-shadow(0 0 6px rgba(6,182,212,0.8))' }}>↘</div>
-      </div>
-
-      {/* Badge match */}
-      <div className="absolute bottom-[-18px] right-4 flex items-center gap-2 px-3 py-2 rounded-xl animate-badge-pop"
-           style={{ background: 'linear-gradient(135deg, #065f46, #059669)',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
-                    border: '1px solid rgba(16,185,129,0.5)' }}>
-        <div className="w-7 h-7 rounded-full bg-emerald-200 flex items-center justify-center text-sm font-black text-gray-800">A</div>
-        <div>
-          <p className="text-[11px] font-black text-emerald-200 uppercase tracking-wide">¡Match con Alejandro!</p>
-          <p className="text-[10px] text-white/60">3 cartas encontradas.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Ilustración personas ── */
-function IlustracionPersonas() {
-  return (
-    <div className="relative flex items-end justify-center" style={{ height: 240 }}>
-      <div className="flex flex-col items-center mr-[-16px] z-10 relative">
-        <div className="text-5xl mb-1">👩🏽</div>
-        <div className="w-20 h-28 rounded-t-3xl" style={{ background: 'linear-gradient(180deg, #7c3aed, #5b21b6)' }} />
-        <div className="absolute bottom-12 -left-3 rounded-lg overflow-hidden"
-             style={{ width: 44, height: 60, transform: 'rotate(-18deg)',
-                      boxShadow: '0 0 12px rgba(124,58,237,0.5)' }}>
-          <img src="https://images.pokemontcg.io/base1/58.png" alt="carta" className="w-full h-full object-cover" />
+        <div className="w-24 h-36 rounded-t-3xl"
+             style={{ background: 'linear-gradient(180deg, #6d28d9 0%, #5b21b6 100%)' }} />
+        {/* Carta en mano */}
+        <div className="absolute bottom-20 -left-6 w-12 h-16 rounded-lg flex items-center justify-center text-xl shadow-lg"
+             style={{ background: 'linear-gradient(135deg, #7c3aed, #4338ca)',
+                      border: '1.5px solid rgba(255,255,255,0.4)',
+                      transform: 'rotate(-12deg)',
+                      boxShadow: '0 0 16px rgba(124,58,237,0.5)' }}>
+          💎
         </div>
       </div>
 
-      <div className="flex flex-col items-center relative">
-        <div className="text-5xl mb-1">👨🏿</div>
-        <div className="w-20 h-28 rounded-t-3xl" style={{ background: 'linear-gradient(180deg, #0369a1, #0c4a6e)' }} />
-        <div className="absolute bottom-4 -right-6 flex gap-0.5">
-          {[
-            'https://storage.googleapis.com/ygoprodeck.com/pics/89631139.jpg',
-            'https://images.pokemontcg.io/base1/4.png',
-            'https://resources.premierleague.com/premierleague/photos/players/250x250/p223094.png',
-          ].map((src, i) => (
-            <div key={i} className="rounded-md overflow-hidden"
-                 style={{ width: 34, height: 48, border: '1px solid rgba(255,255,255,0.3)',
-                          transform: `rotate(${(i - 1) * 10}deg)` }}>
-              <img src={src} alt="carta" className="w-full h-full object-cover" />
+      {/* Persona 2 — hombre */}
+      <div className="relative flex flex-col items-center z-10">
+        <div className="text-6xl mb-0.5 select-none" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))' }}>
+          👨🏿
+        </div>
+        <div className="w-24 h-36 rounded-t-3xl"
+             style={{ background: 'linear-gradient(180deg, #0369a1 0%, #0c4a6e 100%)' }} />
+        {/* Cartas en mano */}
+        <div className="absolute bottom-20 -right-8 flex gap-0.5">
+          {['🐉','⚡','🌿'].map((e, i) => (
+            <div key={i} className="w-9 h-12 rounded-md flex items-center justify-center text-sm shadow-md"
+                 style={{ background: 'linear-gradient(135deg, #1d4ed8, #1e40af)',
+                          border: '1.5px solid rgba(255,255,255,0.3)',
+                          transform: `rotate(${(i - 1) * 9}deg)` }}>
+              {e}
             </div>
           ))}
         </div>
@@ -293,76 +82,313 @@ function IlustracionPersonas() {
   );
 }
 
-/* ── Home principal ── */
+/* ─────────────────────────────────────────────
+   CARTA OCTAGONAL
+───────────────────────────────────────────── */
+const CLIP = 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)';
+
+const CARTAS_PREVIEW = [
+  {
+    nombre:      'Chimera',
+    numero:      '006',
+    emoji:       '🐉',
+    bg:          'linear-gradient(160deg, #92400e 0%, #b45309 50%, #d97706 100%)',
+    iconoColor:  '#fbbf24',
+    coincidencia: true,
+    categoria:   'elite',
+    flipped:     true,
+  },
+  {
+    nombre:      'Cristal',
+    numero:      '014',
+    emoji:       '💎',
+    bg:          'linear-gradient(160deg, #1e3a8a 0%, #2563eb 60%, #38bdf8 100%)',
+    iconoColor:  '#7dd3fc',
+    coincidencia: true,
+    categoria:   'elite',
+  },
+  {
+    nombre:      'Elfa Guardiana',
+    numero:      '023',
+    emoji:       '🧝',
+    bg:          'linear-gradient(160deg, #14532d 0%, #16a34a 60%, #86efac 100%)',
+    iconoColor:  '#86efac',
+    coincidencia: true,
+    categoria:   'comun',
+  },
+  {
+    nombre:      'Torre Antigua',
+    numero:      '037',
+    emoji:       '🏰',
+    bg:          'linear-gradient(160deg, #78350f 0%, #d97706 50%, #fde68a 100%)',
+    iconoColor:  '#fde68a',
+    coincidencia: false,
+    categoria:   'comun',
+  },
+  {
+    nombre:      'Espíritu Agua',
+    numero:      '041',
+    emoji:       '🔮',
+    bg:          'linear-gradient(160deg, #1e3a8a 0%, #0284c7 50%, #67e8f9 100%)',
+    iconoColor:  '#67e8f9',
+    coincidencia: false,
+    categoria:   'comun',
+  },
+];
+
+function CartaOctagonal({ carta, size = 130 }) {
+  const border = Math.round(size * 0.055);
+
+  if (carta.flipped) {
+    // Cara info
+    return (
+      <div className="relative flex-shrink-0" style={{ width: size }}>
+        <div style={{
+          clipPath: CLIP,
+          background: '#1c0f00',
+          padding: border,
+          aspectRatio: '1 / 1.15',
+        }}>
+          <div style={{
+            clipPath: CLIP,
+            background: '#fff9f0',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 4,
+            padding: 8,
+          }}>
+            <p className="font-mono text-xs text-gray-500 font-bold">Nº {carta.numero}</p>
+            <p className="font-black text-sm text-mc-dark text-center leading-tight">{carta.nombre}</p>
+            {carta.coincidencia && (
+              <span className="flex items-center gap-1 bg-green-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow">
+                <span>✓</span> ¡Coincidencia!
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative flex-shrink-0 group" style={{ width: size }}>
+      {/* Badge coincidencia */}
+      {carta.coincidencia && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 whitespace-nowrap">
+          <span className="flex items-center gap-1 bg-green-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full shadow-lg">
+            <span>✓</span> ¡Coincidencia!
+          </span>
+        </div>
+      )}
+
+      {/* Marco exterior oscuro */}
+      <div className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-105"
+           style={{
+             clipPath: CLIP,
+             background: '#1c0f00',
+             padding: border,
+             aspectRatio: '1 / 1.15',
+           }}>
+        {/* Interior */}
+        <div style={{
+          clipPath: CLIP,
+          background: carta.bg,
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '8px 6px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {/* Brillo superior */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '40%',
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0.18), transparent)',
+            pointerEvents: 'none',
+          }} />
+
+          {/* Icono superior */}
+          <div className="flex justify-between w-full">
+            <span style={{ fontSize: 10, color: carta.iconoColor, fontWeight: 900 }}>◆</span>
+            <span style={{ fontSize: 10, color: carta.iconoColor, fontWeight: 900 }}>◆</span>
+          </div>
+
+          {/* Arte central */}
+          <div className="flex items-center justify-center flex-1">
+            <span style={{ fontSize: size * 0.32, filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}>
+              {carta.emoji}
+            </span>
+          </div>
+
+          {/* Nombre + iconos inferiores */}
+          <div className="w-full">
+            <p className="text-center font-black text-white leading-none truncate"
+               style={{ fontSize: size * 0.09, textShadow: '0 1px 4px rgba(0,0,0,0.7)' }}>
+              {carta.nombre}
+            </p>
+            <div className="flex justify-between mt-1">
+              <span style={{ fontSize: 9, color: carta.iconoColor }}>◆</span>
+              <span style={{ fontSize: 9, color: carta.iconoColor }}>◆</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   HOME PAGE
+───────────────────────────────────────────── */
 export default function Home() {
   const { user } = useUserStore();
 
+  const elite  = CARTAS_PREVIEW.filter(c => c.categoria === 'elite');
+  const comun  = CARTAS_PREVIEW.filter(c => c.categoria === 'comun');
+
   return (
-    <div className="relative overflow-hidden min-h-screen">
+    <div className="min-h-screen" style={{ background: '#f8f7ff' }}>
 
-      {/* Decoraciones */}
-      {HOLO_DECOS.map((d, i) => (
-        <div key={i} className="holo-deco pointer-events-none"
-             style={{
-               position: 'fixed', top: d.top, left: d.left, right: d.right,
-               width: d.w, height: d.h,
-               transform: `rotate(${d.rot}deg)`,
-               animation: `float ${4 + (i % 3)}s ease-in-out infinite`,
-               animationDelay: d.delay, opacity: 0.5,
-             }} />
-      ))}
+      {/* ════════════════════════════════
+          HERO
+      ════════════════════════════════ */}
+      <section style={{
+        background: 'linear-gradient(120deg, #5b21b6 0%, #7c3aed 40%, #d97706 100%)',
+        minHeight: 340,
+      }}>
+        <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-8">
 
-      {/* ── HERO ── */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-14 pb-10 flex flex-col lg:flex-row items-center justify-between gap-10">
-        <div className="flex-1 max-w-xl animate-slide-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-mc-border text-mc-purple text-xs font-bold mb-6 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-mc-purple animate-pulse" />
-            MVP disponible — Pokémon, Fútbol y Yu-Gi-Oh
+          {/* Texto */}
+          <div className="flex-1 max-w-xl">
+            <h1 className="font-black text-white leading-tight mb-5 uppercase"
+                style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', letterSpacing: '-0.01em',
+                         textShadow: '0 2px 16px rgba(0,0,0,0.25)' }}>
+              Intercambia con propósito,<br />completa tus colecciones.
+            </h1>
+
+            <p className="text-white/85 leading-relaxed mb-8"
+               style={{ fontSize: '1rem', maxWidth: 480 }}>
+              Transformamos el caos en eficiencia. Conecta con coleccionistas
+              locales, intercambia duplicados y completa tus álbumes más rápido.
+              MatchCard es tu compañero inteligente.
+            </p>
+
+            <Link
+              to={user ? '/repes' : '/register'}
+              className="inline-flex items-center gap-2 font-black uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all duration-200 hover:brightness-110 active:scale-95 shadow-lg"
+              style={{ background: '#111827', color: '#fff', fontSize: '0.85rem',
+                       boxShadow: '0 4px 20px rgba(0,0,0,0.35)' }}
+            >
+              Comenzar ahora
+            </Link>
           </div>
 
-          <h1 className="font-black leading-tight mb-4 text-mc-dark"
-              style={{ fontSize: 'clamp(2.2rem, 5vw, 3.4rem)' }}>
-            El Tinder de las<br />
-            <span className="text-mc-purple">Cartas Coleccionables</span>
-          </h1>
+          {/* Ilustración */}
+          <div className="hidden lg:flex items-end justify-center flex-shrink-0">
+            <IlustracionHero />
+          </div>
+        </div>
+      </section>
 
-          <p className="text-mc-muted text-lg mb-8 leading-relaxed">
-            ¡Tengo, Tengo, <span className="text-mc-purple font-black">Me Falta!</span> Deja de comprar, empieza a intercambiar.
-            Tus colecciones, conectadas.
+      {/* ════════════════════════════════
+          SECCIÓN CARTAS
+      ════════════════════════════════ */}
+      <section className="py-14 px-6" style={{ background: '#f0eef8' }}>
+        <div className="max-w-7xl mx-auto">
+
+          {/* Categorías + cartas */}
+          <div className="flex flex-col md:flex-row items-start gap-10 justify-center">
+
+            {/* ÉLITE */}
+            <div>
+              <h2 className="font-black text-mc-dark text-sm tracking-widest uppercase mb-6">
+                Colecciones de Élite
+              </h2>
+              <div className="flex items-end gap-4">
+                {elite.map((carta, i) => (
+                  <CartaOctagonal key={i} carta={carta} size={carta.flipped ? 120 : 128} />
+                ))}
+              </div>
+            </div>
+
+            {/* Separador vertical */}
+            <div className="hidden md:block w-px bg-gray-300 self-stretch mx-4" />
+
+            {/* COMUNES */}
+            <div>
+              <h2 className="font-black text-mc-dark text-sm tracking-widest uppercase mb-6">
+                Cromos Comunes
+              </h2>
+              <div className="flex items-end gap-4">
+                {comun.map((carta, i) => (
+                  <CartaOctagonal key={i} carta={carta} size={128} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════
+          ÚNETE A LA COMUNIDAD
+      ════════════════════════════════ */}
+      <section className="py-16 px-6 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-black text-mc-dark text-3xl mb-4 uppercase tracking-tight">
+            Únete a la Comunidad
+          </h2>
+          <p className="text-mc-muted text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+            Miles de coleccionistas ya intercambian sus cartas en MatchCard.
+            Regístrate gratis y encuentra tu match hoy.
           </p>
 
-          <div className="flex flex-wrap gap-3">
-            <Link to={user ? '/repes' : '/register'} className="btn-yellow uppercase tracking-wide">
-              <span>📷</span> Subir Mis Repes
-            </Link>
-            <Link to="/album" className="btn-outline uppercase tracking-wide">
-              <span>🔍</span> Explorar Álbumes
-            </Link>
+          <div className="flex flex-wrap gap-6 justify-center mb-10">
+            {[
+              { icon: '⚡', label: 'Matches automáticos',    desc: 'Algoritmo inteligente que conecta tus repes con las faltas de otros.' },
+              { icon: '📍', label: 'Por ciudad',             desc: 'Intercambia con coleccionistas de tu zona para quedar en persona.' },
+              { icon: '🔄', label: 'Sin dinero de por medio', desc: 'Solo intercambios directos de cartas duplicadas.' },
+            ].map(({ icon, label, desc }) => (
+              <div key={label} className="flex flex-col items-center text-center max-w-[200px]">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 shadow-sm"
+                     style={{ background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)' }}>
+                  {icon}
+                </div>
+                <p className="font-black text-mc-dark text-sm mb-1">{label}</p>
+                <p className="text-mc-muted text-xs leading-relaxed">{desc}</p>
+              </div>
+            ))}
           </div>
-        </div>
 
-        <div className="hidden lg:block">
-          <Binder />
+          {!user && (
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link to="/register"
+                className="font-black uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all duration-200 hover:brightness-110 active:scale-95 shadow-md text-sm"
+                style={{ background: '#111827', color: '#fff' }}>
+                Crear cuenta gratis
+              </Link>
+              <Link to="/login"
+                className="font-black uppercase tracking-widest px-8 py-3.5 rounded-xl border-2 border-mc-dark text-mc-dark hover:bg-mc-dark hover:text-white transition-all duration-200 text-sm">
+                Ya tengo cuenta
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ── CATEGORÍAS ── */}
-      <section className="relative max-w-7xl mx-auto px-6 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-          {CATEGORIAS.map((cat, i) => (
-            <SeccionCategoria key={cat.titulo} categoria={cat} indice={i} />
-          ))}
-          <div className="hidden lg:flex justify-center items-end">
-            <IlustracionPersonas />
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-mc-border/50 py-6 px-6 bg-white/60">
+      {/* ════════════════════════════════
+          FOOTER — Instagram + copyright
+      ════════════════════════════════ */}
+      <footer className="border-t border-gray-100 py-6 px-6 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
 
-          {/* Solo Instagram con logo real */}
+          {/* Instagram con logo real */}
           <a
             href="https://instagram.com"
             target="_blank"
@@ -372,8 +398,8 @@ export default function Home() {
           >
             <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:-translate-y-0.5"
                  style={{ background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)' }}>
-              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" rx="5.5" ry="5.5" stroke="white" strokeWidth="2" fill="none"/>
+              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
+                <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" strokeWidth="2" fill="none"/>
                 <circle cx="12" cy="12" r="4.8" stroke="white" strokeWidth="2" fill="none"/>
                 <circle cx="17.6" cy="6.4" r="1.3" fill="white"/>
               </svg>
@@ -387,7 +413,8 @@ export default function Home() {
             © 2026 MatchCard — Plataforma de Intercambio de Cartas Coleccionables
           </p>
 
-          <div /> {/* spacer para centrar el copyright */}
+          {/* Spacer para centrar el copyright en desktop */}
+          <div className="w-40 hidden sm:block" />
         </div>
       </footer>
     </div>
