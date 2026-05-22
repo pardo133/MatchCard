@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    @apply font-display antialiased;
+    background: linear-gradient(160deg, #ede9fe 0%, #e0e7ff 50%, #dbeafe 100%);
+    min-height: 100vh;
+    color: #1e1b4b;
+  }
+
+  ::-webkit-scrollbar       { width: 5px; }
+  ::-webkit-scrollbar-track { background: #ede9fe; }
+  ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 4px; }
+}
+
+@layer components {
+  /* Botón principal amarillo */
+  .btn-yellow {
+    @apply inline-flex items-center justify-center gap-2 font-black px-6 py-3 rounded-full
+           text-gray-900 transition-all duration-200 active:scale-95 hover:brightness-105 cursor-pointer text-sm;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    box-shadow: 0 4px 20px rgba(255,165,0,0.4);
+  }
+
+  /* Botón contorno oscuro */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 font-bold px-6 py-3 rounded-full text-sm
+           text-mc-dark border-2 border-mc-dark/30 hover:border-mc-purple hover:text-mc-purple
+           transition-all duration-200 active:scale-95 cursor-pointer bg-white/60;
+  }
+
+  /* Botón contorno amarillo (navbar) */
+  .btn-outline-yellow {
+    @apply inline-flex items-center justify-center font-black px-5 py-2 rounded-full text-sm
+           transition-all duration-200 active:scale-95 cursor-pointer;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #1a1200;
+    box-shadow: 0 2px 12px rgba(255,165,0,0.35);
+  }
+
+  /* Tarjeta base */
+  .card-white {
+    @apply bg-white rounded-2xl border border-mc-border/60;
+    box-shadow: 0 4px 24px rgba(91,33,182,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  /* Tarjeta con hover glow */
+  .card-hover {
+    @apply card-white transition-all duration-300;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 40px rgba(91,33,182,0.18), 0 2px 8px rgba(0,0,0,0.06);
+    transform: translateY(-3px);
+  }
+
+  /* Input claro */
+  .input-light {
+    @apply w-full rounded-xl px-4 py-3 text-mc-dark placeholder-gray-400 text-sm
+           bg-mc-light border border-mc-border focus:outline-none
+           focus:border-mc-purple focus:ring-2 focus:ring-mc-purple/20
+           transition-all duration-200;
+  }
+
+  /* Link de nav */
+  .nav-link {
+    @apply text-mc-dark/70 hover:text-mc-purple font-semibold text-sm transition-colors duration-150 px-3 py-1.5 rounded-lg hover:bg-mc-purple/5;
+  }
+
+  /* Podio de carta */
+  .podium {
+    @apply rounded-2xl p-5 relative overflow-hidden flex flex-col items-center;
+    background: linear-gradient(180deg, #4338ca 0%, #3730a3 60%, #312e81 100%);
+    box-shadow: 0 8px 32px rgba(67,56,202,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold;
+  }
+
+  /* Categoría título */
+  .category-title {
+    @apply font-black text-sm tracking-widest uppercase text-mc-dark;
+  }
+
+  /* Decoración holo */
+  .holo-deco {
+    position: absolute;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(167,139,250,0.5), rgba(99,102,241,0.3), rgba(255,215,0,0.2));
+    border: 1px solid rgba(167,139,250,0.4);
+    box-shadow: 0 0 12px rgba(167,139,250,0.3);
+  }
+}
