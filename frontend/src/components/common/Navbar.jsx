@@ -10,80 +10,90 @@ const NAV_AUTH = [
 
 export default function Navbar() {
   const { user, logout } = useUserStore();
-  const navigate          = useNavigate();
-  const location          = useLocation();
+  const navigate         = useNavigate();
+  const location         = useLocation();
 
   const handleLogout = () => { logout(); navigate('/'); };
 
   return (
-    <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+    <nav style={{ background: '#0f0e1a' }} className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 select-none">
           <span className="font-black text-2xl tracking-tight" style={{ fontFamily: '"Nunito", sans-serif' }}>
             <span style={{
-              background: 'linear-gradient(135deg, #d97706, #f59e0b)',
+              background: 'linear-gradient(135deg, #FFD700, #FFA500)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
             }}>Match</span>
-            <span className="text-mc-dark">Card</span>
+            <span className="text-white">Card</span>
           </span>
         </Link>
 
-        {/* Links autenticado */}
-        {user && (
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_AUTH.map(({ to, label }) => (
+        {/* Center links */}
+        <div className="hidden md:flex items-center gap-1">
+          {!user ? (
+            <Link
+              to="/quienes-somos"
+              className="text-sm font-semibold text-white/60 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5">
+              ¿Quiénes somos?
+            </Link>
+          ) : (
+            NAV_AUTH.map(({ to, label }) => (
               <Link key={to} to={to}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-150
-                  ${location.pathname === to
-                    ? 'bg-mc-light text-mc-purple'
-                    : 'text-mc-muted hover:text-mc-dark hover:bg-gray-50'}`}>
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-150 ${
+                  location.pathname === to
+                    ? 'text-white bg-white/10'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}>
                 {label}
               </Link>
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
 
-        {/* Acciones */}
-        <div className="flex items-center gap-3">
+        {/* Right actions */}
+        <div className="flex items-center gap-2">
           {user ? (
             <>
-              <span className="hidden sm:block text-sm text-mc-muted font-medium">{user.username}</span>
+              <span className="hidden sm:block text-sm text-white/50 font-medium">{user.username}</span>
               {user.isAdmin && (
                 <Link to="/admin"
-                  className="text-xs font-bold px-3 py-1.5 rounded-full border border-mc-purple/40 text-mc-purple hover:bg-mc-light transition-colors">
+                  className="text-xs font-bold px-3 py-1.5 rounded-full border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/10 transition-colors">
                   Admin
                 </Link>
               )}
               <button onClick={handleLogout}
-                className="text-sm font-bold border border-gray-200 text-mc-muted hover:border-gray-300 hover:text-mc-dark px-4 py-2 rounded-lg transition-colors">
+                className="text-sm font-bold px-4 py-2 rounded-lg border border-white/15 text-white/60 hover:border-white/35 hover:text-white transition-all">
                 Salir
               </button>
             </>
           ) : (
             <>
-              <Link to="/register"
-                className="text-sm font-black px-5 py-2 rounded-lg border-2 border-mc-dark text-mc-dark hover:bg-mc-dark hover:text-white transition-all duration-200 tracking-wide uppercase">
-                Registro
-              </Link>
               <Link to="/login"
-                className="text-sm font-black px-5 py-2 rounded-lg border-2 border-mc-dark text-mc-dark hover:bg-mc-dark hover:text-white transition-all duration-200 tracking-wide uppercase">
-                Iniciar Sesión
+                className="text-sm font-bold px-5 py-2 rounded-lg border border-white/18 text-white/75 hover:text-white hover:border-white/35 transition-all">
+                Login
+              </Link>
+              <Link to="/register"
+                className="text-sm font-black px-5 py-2.5 rounded-lg transition-all hover:brightness-110 active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#111' }}>
+                Registro
               </Link>
             </>
           )}
         </div>
       </div>
 
-      {/* Mobile nav — solo si autenticado */}
+      {/* Mobile nav — solo autenticado */}
       {user && (
-        <div className="md:hidden flex border-t border-gray-100">
+        <div className="md:hidden flex" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           {NAV_AUTH.map(({ to, label }) => (
             <Link key={to} to={to}
-              className={`flex-1 text-center py-2.5 text-xs font-bold transition-colors
-                ${location.pathname === to ? 'text-mc-purple' : 'text-mc-muted'}`}>
+              className={`flex-1 text-center py-2.5 text-xs font-bold transition-colors ${
+                location.pathname === to ? 'text-yellow-400' : 'text-white/40'
+              }`}>
               {label}
             </Link>
           ))}

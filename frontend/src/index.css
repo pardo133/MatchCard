@@ -210,3 +210,7 @@
     box-shadow: 0 0 12px rgba(167,139,250,0.3);
   }
 }
+
+/* Oculta scrollbar del slider de categorías */
+.slider-scroll::-webkit-scrollbar { display: none; }
+.slider-scroll { -ms-overflow-style: none; scrollbar-width: none; }

@@ -11,8 +11,9 @@ import Profile    from './pages/Profile';
 import MisRepes   from './pages/MisRepes';
 import Album      from './pages/Album';
 import Admin      from './pages/Admin';
-import Descubrir  from './pages/Descubrir';
-import Chat       from './pages/Chat';
+import Descubrir    from './pages/Descubrir';
+import Chat         from './pages/Chat';
+import QuienesSomos from './pages/QuienesSomos';
 
 function PrivateRoute({ children }) {
   const token = useUserStore(state => state.token);
@@ -37,8 +38,9 @@ export default function App() {
         />
         <Navbar />
         <Routes>
-          <Route path="/"           element={<Home />} />
-          <Route path="/login"      element={<Login />} />
+          <Route path="/"                element={<Home />} />
+          <Route path="/quienes-somos"   element={<QuienesSomos />} />
+          <Route path="/login"           element={<Login />} />
           <Route path="/register"   element={<Register />} />
           <Route path="/dashboard"  element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/profile"    element={<PrivateRoute><Profile /></PrivateRoute>} />
