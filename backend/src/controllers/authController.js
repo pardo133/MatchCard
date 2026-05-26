@@ -75,14 +75,14 @@ export async function login(req, res, next) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
-    // Bloquear login hasta que verifiquen el correo
-    if (!user.isEmailVerified) {
-      return res.status(403).json({
-        message:          'Debes verificar tu email antes de iniciar sesión',
-        needsVerification: true,
-        email:             user.email,
-      });
-    }
+    // TODO: reactivar verificación de email cuando SMTP esté configurado
+    // if (!user.isEmailVerified) {
+    //   return res.status(403).json({
+    //     message: 'Debes verificar tu email antes de iniciar sesión',
+    //     needsVerification: true,
+    //     email: user.email,
+    //   });
+    // }
 
     res.json({ token: generateToken(user._id), user });
   } catch (error) {

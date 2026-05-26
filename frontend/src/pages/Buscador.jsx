@@ -367,6 +367,129 @@ function ModalUpgrade({ onClose }) {
   );
 }
 
+/* ── Sección Pro (visible para usuarios gratuitos) ──────── */
+function SeccionPro({ onUpgrade }) {
+  return (
+    <div className="relative overflow-hidden rounded-2xl"
+         style={{
+           background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%)',
+           border: '1px solid rgba(167,139,250,0.3)',
+           boxShadow: '0 8px 40px rgba(76,29,149,0.25)',
+         }}>
+
+      {/* Decoración de fondo */}
+      <div style={{
+        position: 'absolute', top: -40, right: -40,
+        width: 180, height: 180, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(251,191,36,0.12) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: -30, left: -20,
+        width: 140, height: 140, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+
+      <div className="relative p-6">
+        {/* Cabecera */}
+        <div className="flex items-start gap-4 mb-5">
+          <div className="badge-float flex-shrink-0 text-4xl">🌟</div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <h2 style={{ color: '#fde68a', fontWeight: 900, fontSize: 18, margin: 0 }}>
+                Pase de Coleccionista
+              </h2>
+              <span style={{
+                background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                color: '#1a1200', fontSize: 10, fontWeight: 900,
+                padding: '2px 8px', borderRadius: 20,
+              }}>PRO</span>
+            </div>
+            <p style={{ color: 'rgba(196,181,253,0.8)', fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+              La versión gratuita te permite hacer <strong style={{ color: '#c4b5fd' }}>3 búsquedas al día</strong>.
+              Con el Pase de Coleccionista buscas sin límites y contactas con todos los
+              coleccionistas que tienen tus faltas, sin esperas ni restricciones.
+            </p>
+          </div>
+        </div>
+
+        {/* Qué incluye — grid 2 col */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+          {[
+            { icon: '🔍', text: 'Búsquedas ilimitadas cada día' },
+            { icon: '📞', text: 'Contacto directo sin esperas' },
+            { icon: '🚫', text: 'Sin anuncios entre búsquedas' },
+            { icon: '⚡', text: 'Acceso prioritario a resultados' },
+          ].map(({ icon, text }) => (
+            <div key={text} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: 'rgba(255,255,255,0.07)',
+              border: '1px solid rgba(167,139,250,0.2)',
+              borderRadius: 10, padding: '8px 12px',
+            }}>
+              <span style={{ fontSize: 16 }}>{icon}</span>
+              <span style={{ color: '#e9d5ff', fontSize: 12, fontWeight: 600 }}>{text}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Precio + CTA */}
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div style={{
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(251,191,36,0.35)',
+            borderRadius: 14, padding: '10px 20px', textAlign: 'center', flexShrink: 0,
+          }}>
+            <p style={{ color: '#fde68a', fontSize: 26, fontWeight: 900, margin: 0, lineHeight: 1 }}>
+              1,99€
+            </p>
+            <p style={{ color: 'rgba(253,230,138,0.6)', fontSize: 11, margin: 0, fontWeight: 700 }}>
+              al mes · cancela cuando quieras
+            </p>
+          </div>
+
+          <div className="flex-1 flex flex-col gap-2 w-full">
+            <button
+              onClick={onUpgrade}
+              style={{
+                width: '100%', padding: '13px', borderRadius: 50,
+                background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                border: 'none', fontWeight: 900, fontSize: 14, color: '#1a1200',
+                cursor: 'pointer', boxShadow: '0 4px 20px rgba(255,165,0,0.4)',
+                transition: 'transform 0.15s, box-shadow 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 28px rgba(255,165,0,0.5)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 20px rgba(255,165,0,0.4)'; }}
+            >
+              🌟 Hacerse Pro ahora
+            </button>
+            <p style={{ color: 'rgba(167,139,250,0.55)', fontSize: 11, textAlign: 'center', margin: 0 }}>
+              🔒 Pago seguro con Stripe · Tarjeta, Google Pay, Apple Pay
+            </p>
+          </div>
+        </div>
+
+        {/* Comparativa libre vs pro */}
+        <div style={{
+          marginTop: 20, paddingTop: 16,
+          borderTop: '1px solid rgba(167,139,250,0.2)',
+        }}>
+          <p style={{ color: 'rgba(167,139,250,0.6)', fontSize: 11, fontWeight: 700, margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            ¿Por qué merece la pena?
+          </p>
+          <p style={{ color: 'rgba(196,181,253,0.75)', fontSize: 12, margin: 0, lineHeight: 1.6 }}>
+            Dos sobres de cromos cuestan en torno a <strong style={{ color: '#c4b5fd' }}>2€</strong> y
+            te dan cartas al azar. Por <strong style={{ color: '#fde68a' }}>1,99€/mes</strong> puedes
+            contactar directamente con la persona exacta que tiene el cromo que te falta,
+            sin suerte, sin esperas y sin límites.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Chip carta clickable ────────────────────────────────── */
 function ChipCarta({ carta, onClick }) {
   const e = RAREZA_ESTILO[carta.rareza] ?? RAREZA_ESTILO.common;
@@ -504,15 +627,17 @@ export default function Buscador() {
   const timerRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Detectar retorno exitoso desde Stripe
+  const [pagoExitoso, setPagoExitoso] = useState(false);
+
+  // Detectar retorno exitoso desde Stripe y refrescar usuario desde la API
   useEffect(() => {
     if (searchParams.get('upgraded') === 'true') {
-      toast.success('🌟 ¡Pase de Coleccionista activado! Búsquedas ilimitadas', { duration: 6000 });
-      setLimitReached(false);
-      // Actualizar usuario en store
-      if (user) setUser({ ...user, isPremium: true });
-      // Limpiar el query param de la URL
       setSearchParams({}, { replace: true });
+      setLimitReached(false);
+      // Refrescar usuario desde el servidor para obtener isPremium: true
+      axiosClient.get('/auth/me')
+        .then(({ data }) => { setUser(data.user); setPagoExitoso(true); })
+        .catch(() => { setPagoExitoso(true); }); // mostrar modal aunque falle el refresco
     }
   }, []); // eslint-disable-line
 
@@ -661,20 +786,20 @@ export default function Buscador() {
 
       {/* Estado vacío */}
       {resultados === null && !loading && (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4 animate-float inline-block">🃏</div>
-          <h3 className="text-lg font-black text-mc-dark mb-2">¿Qué cromo te falta?</h3>
-          <p className="text-mc-muted text-sm max-w-sm mx-auto leading-relaxed">
-            Escribe el nombre arriba y verás qué coleccionistas lo tienen de sobra,
-            con su email y teléfono para contactar directamente.
-          </p>
-          <p className="text-xs text-mc-muted mt-4">
-            Versión gratuita: <strong>3 búsquedas por día</strong> ·{' '}
-            <button onClick={() => setShowUpgrade(true)}
-              className="text-mc-purple font-bold hover:underline bg-transparent border-0 cursor-pointer p-0 text-xs">
-              Ver Pase de Coleccionista
-            </button>
-          </p>
+        <div className="space-y-8">
+          <div className="text-center py-10">
+            <div className="text-6xl mb-4 animate-float inline-block">🃏</div>
+            <h3 className="text-lg font-black text-mc-dark mb-2">¿Qué cromo te falta?</h3>
+            <p className="text-mc-muted text-sm max-w-sm mx-auto leading-relaxed">
+              Escribe el nombre arriba y verás qué coleccionistas lo tienen de sobra,
+              con su email y teléfono para contactar directamente.
+            </p>
+          </div>
+
+          {/* Sección Pro visible siempre para usuarios gratuitos */}
+          {!user?.isPremium && (
+            <SeccionPro onUpgrade={() => setShowUpgrade(true)} />
+          )}
         </div>
       )}
 
@@ -715,6 +840,13 @@ export default function Buscador() {
               />
             ))}
           </div>
+
+          {/* Sección Pro debajo de resultados para usuarios gratuitos */}
+          {!user?.isPremium && (
+            <div className="mt-8">
+              <SeccionPro onUpgrade={() => setShowUpgrade(true)} />
+            </div>
+          )}
         </>
       )}
 
@@ -726,7 +858,107 @@ export default function Buscador() {
           onClose={() => setModalData(null)}
         />
       )}
-      {showUpgrade && <ModalUpgrade onClose={() => setShowUpgrade(false)} />}
+      {showUpgrade  && <ModalUpgrade     onClose={() => setShowUpgrade(false)} />}
+      {pagoExitoso  && <ModalPagoExitoso onClose={() => setPagoExitoso(false)} />}
+    </div>
+  );
+}
+
+/* ── Modal confirmación de pago ──────────────────────────── */
+function ModalPagoExitoso({ onClose }) {
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 2000,
+        background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        animation: 'overlayFadeIn 0.3s ease', padding: 20,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: 'linear-gradient(160deg, #1e1b4b 0%, #312e81 60%, #1a1200 100%)',
+          border: '2px solid #FFD700',
+          borderRadius: 28,
+          boxShadow: '0 0 80px rgba(255,215,0,0.25), 0 32px 80px rgba(0,0,0,0.5)',
+          padding: '48px 36px',
+          maxWidth: 420, width: '100%',
+          textAlign: 'center',
+          animation: 'modalCardEntrada 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards',
+          position: 'relative', overflow: 'hidden',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Destellos de fondo */}
+        <div style={{
+          position: 'absolute', top: -60, right: -60,
+          width: 200, height: 200, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: -40, left: -40,
+          width: 160, height: 160, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* Icono animado */}
+        <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 20 }} className="pop-in inline-block">
+          👑
+        </div>
+
+        {/* Título */}
+        <h2 style={{
+          fontWeight: 900, fontSize: 26, margin: '0 0 8px',
+          background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        }}>
+          ¡Pago realizado!
+        </h2>
+        <p style={{ color: '#e9d5ff', fontSize: 15, margin: '0 0 28px', fontWeight: 700 }}>
+          Ya eres Coleccionista Pro 🌟
+        </p>
+
+        {/* Beneficios desbloqueados */}
+        <div style={{
+          background: 'rgba(255,255,255,0.07)',
+          border: '1px solid rgba(255,215,0,0.2)',
+          borderRadius: 16, padding: '16px 20px', marginBottom: 28, textAlign: 'left',
+        }}>
+          <p style={{ color: 'rgba(253,230,138,0.7)', fontSize: 11, fontWeight: 900, margin: '0 0 10px',
+                      textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Desbloqueado
+          </p>
+          {[
+            '🔍 Búsquedas ilimitadas cada día',
+            '📞 Contacto directo sin esperas',
+            '🚫 Sin anuncios entre búsquedas',
+            '👑 Insignia Pro en tu perfil',
+          ].map(b => (
+            <div key={b} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '5px 0', color: '#c4b5fd', fontSize: 13, fontWeight: 600,
+            }}>
+              {b}
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={onClose}
+          style={{
+            width: '100%', padding: '14px', borderRadius: 50,
+            background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+            border: 'none', fontWeight: 900, fontSize: 15, color: '#1a1200',
+            cursor: 'pointer', boxShadow: '0 4px 24px rgba(255,165,0,0.45)',
+          }}
+        >
+          🚀 Empezar a buscar sin límites
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster }      from 'react-hot-toast';
 import { SocketProvider }      from './context/SocketContext';
 import { useUserStore }        from './store/userStore';
+import axiosClient             from './api/axiosClient';
 import Navbar                  from './components/common/Navbar';
 import CookieBanner            from './components/common/CookieBanner';
 import Home                    from './pages/Home';
@@ -23,6 +25,21 @@ function PrivateRoute({ children }) {
   return token ? children : <Navigate to="/login" replace />;
 }
 
+// Refresca los datos del usuario desde la API al arrancar la app.
+// Garantiza que isPremium y otros campos estén siempre actualizados.
+function AuthSync() {
+  const { token, setUser, logout } = useUserStore();
+
+  useEffect(() => {
+    if (!token) return;
+    axiosClient.get('/auth/me')
+      .then(({ data }) => setUser(data.user))
+      .catch(() => logout()); // token inválido → cerrar sesión
+  }, [token]); // eslint-disable-line
+
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -39,6 +56,7 @@ export default function App() {
             },
           }}
         />
+        <AuthSync />
         <Navbar />
         <Routes>
           {/* Públicas */}

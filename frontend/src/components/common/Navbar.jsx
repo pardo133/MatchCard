@@ -57,7 +57,20 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {user ? (
             <>
-              <span className="hidden sm:block text-sm text-white/50 font-medium">{user.username}</span>
+              <span className="hidden sm:flex items-center gap-1.5">
+                <span className="text-sm text-white/50 font-medium">{user.username}</span>
+                {user.isPremium && (
+                  <span style={{
+                    background: 'linear-gradient(135deg, #FFD700, #FFA500)',
+                    color: '#1a1200', fontSize: 10, fontWeight: 900,
+                    padding: '2px 7px', borderRadius: 20,
+                    boxShadow: '0 0 10px rgba(255,165,0,0.4)',
+                    letterSpacing: '0.03em',
+                  }}>
+                    👑 PRO
+                  </span>
+                )}
+              </span>
               <Link to="/profile"
                 className={`text-sm font-bold px-4 py-2 rounded-lg border border-white/15 transition-all ${
                   location.pathname === '/profile' ? 'text-white bg-white/10' : 'text-white/60 hover:text-white hover:bg-white/5'
