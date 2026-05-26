@@ -1,81 +1,80 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import ProgressBar from '../components/common/ProgressBar';
 import { toast } from 'react-hot-toast';
 
-const RAREZA_COLOR = {
-  'common':      'ring-gray-300 bg-gray-50',
-  'uncommon':    'ring-green-300 bg-green-50',
-  'rare':        'ring-blue-300 bg-blue-50',
-  'ultra-rare':  'ring-purple-300 bg-purple-50',
-  'secret-rare': 'ring-amber-300 bg-amber-50',
+const RAREZA_CARD = {
+  'secret-rare': { borde: '#d97706', glow: 'rgba(217,119,6,0.55)',  bg: 'linear-gradient(160deg,#78350f,#d97706)', emoji: '✨' },
+  'ultra-rare':  { borde: '#7c3aed', glow: 'rgba(124,58,237,0.5)', bg: 'linear-gradient(160deg,#4c1d95,#7c3aed)', emoji: '🔮' },
+  'rare':        { borde: '#2563eb', glow: 'rgba(37,99,235,0.45)',  bg: 'linear-gradient(160deg,#1e3a8a,#3b82f6)', emoji: '💎' },
+  'uncommon':    { borde: '#16a34a', glow: 'rgba(22,163,74,0.45)',  bg: 'linear-gradient(160deg,#14532d,#22c55e)', emoji: '🌿' },
+  'common':      { borde: '#6b7280', glow: 'rgba(107,114,128,0.35)',bg: 'linear-gradient(160deg,#1f2937,#4b5563)', emoji: '🃏' },
 };
 
-/* ── Carta individual del álbum ── */
-function CartaAlbum({ cromo, estado }) {
+function CartaAlbum({ cromo }) {
   const [flipped, setFlipped] = useState(false);
-  const color = RAREZA_COLOR[cromo.rareza] || RAREZA_COLOR.common;
-  const tengo = estado === 'repetidos';
+  const r = RAREZA_CARD[cromo.rareza] || RAREZA_CARD.common;
+  const W = 80;
+  const H = Math.round(W * 1.4);
 
   return (
-    <div
-      className="cursor-pointer"
-      style={{ perspective: '600px' }}
-      onClick={() => setFlipped(f => !f)}
-      title={`${cromo.nombre} — ${tengo ? '¡La tengo!' : 'Me falta'}`}
-    >
-      <div
-        className="relative transition-transform duration-500"
-        style={{
-          transformStyle: 'preserve-3d',
-          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-          aspectRatio: '2/3',
-        }}
-      >
+    <div style={{ perspective: '700px', width: W, cursor: 'pointer', flexShrink: 0 }}
+         onClick={() => setFlipped(f => !f)}
+         title={cromo.nombre}>
+      <div style={{ width: W, height: H, position: 'relative', transformStyle: 'preserve-3d',
+                    transition: 'transform 0.5s', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0)' }}>
+
         {/* Frente */}
-        <div
-          className={`absolute inset-0 rounded-xl border-2 overflow-hidden flex flex-col
-            ${tengo ? `ring-2 ${color}` : 'ring-0 border-dashed border-gray-200 opacity-45'}
-            transition-all duration-300 hover:scale-105`}
-          style={{ backfaceVisibility: 'hidden' }}
-        >
+        <div style={{
+          position: 'absolute', inset: 0, borderRadius: 8, overflow: 'hidden', backfaceVisibility: 'hidden',
+          border: `2px solid ${r.borde}70`,
+          boxShadow: `0 3px 12px ${r.glow}50`,
+          background: cromo.imagenUrl ? '#111' : r.bg,
+          transition: 'transform 0.2s',
+        }}
+          onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.06) translateY(-3px)')}
+          onMouseLeave={e => (e.currentTarget.style.transform = '')}>
           {cromo.imagenUrl ? (
-            <img src={cromo.imagenUrl} alt={cromo.nombre}
-                 className="w-full h-full object-cover"
-                 onError={e => { e.target.style.display = 'none'; }} />
+            <>
+              <img src={cromo.imagenUrl} alt={cromo.nombre}
+                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                   onError={e => { e.target.style.display = 'none'; }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0,
+                            background: 'linear-gradient(transparent,rgba(0,0,0,0.85))', padding: '12px 4px 4px' }}>
+                <p style={{ color: '#fff', fontSize: 8, fontWeight: 900, textAlign: 'center',
+                             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {cromo.nombre}
+                </p>
+              </div>
+            </>
           ) : (
-            <div className={`w-full h-full flex flex-col items-center justify-center gap-1 p-1
-              ${tengo ? 'bg-gradient-to-br from-mc-light to-white' : 'bg-gray-100'}`}>
-              <span className="text-2xl">{tengo ? '🃏' : '❓'}</span>
-              <p className="text-[9px] font-bold text-center text-mc-dark leading-tight px-1 truncate w-full text-center">
-                {tengo ? cromo.nombre : '???'}
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+                          alignItems: 'center', justifyContent: 'space-between', padding: '6px 4px' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '38%',
+                            background: 'linear-gradient(to bottom,rgba(255,255,255,0.14),transparent)', pointerEvents: 'none' }} />
+              <span style={{ fontSize: W * 0.28, lineHeight: 1, zIndex: 1 }}>{r.emoji}</span>
+              <p style={{ color: '#fff', fontSize: 7.5, fontWeight: 900, textAlign: 'center', zIndex: 1,
+                           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+                {cromo.nombre}
               </p>
             </div>
           )}
-
-          {/* Número */}
-          <div className="absolute top-1 left-1 bg-black/50 text-white text-[8px] font-mono px-1 rounded">
-            #{String(cromo.numero).padStart(3, '0')}
+          {/* Badge ✓ */}
+          <div style={{ position: 'absolute', top: 3, right: 3, width: 14, height: 14, borderRadius: '50%',
+                        background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: '#fff', fontSize: 7, fontWeight: 900 }}>✓</span>
           </div>
-
-          {/* Badge estado */}
-          {tengo && (
-            <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-              <span className="text-white text-[8px] font-black">✓</span>
-            </div>
-          )}
         </div>
 
         {/* Reverso */}
-        <div
-          className="absolute inset-0 rounded-xl bg-mc-light border-2 border-mc-border flex flex-col items-center justify-center p-2 text-center"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          <p className="text-xs font-black text-mc-dark leading-tight mb-1">{cromo.nombre}</p>
-          <p className="text-[10px] text-mc-muted mb-1">{cromo.expansion}</p>
-          <span className={`text-[9px] px-2 py-0.5 rounded-full font-semibold
-            ${tengo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-            {tengo ? '¡La tengo!' : 'Me falta'}
+        <div style={{ position: 'absolute', inset: 0, borderRadius: 8, backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)', background: '#ede9fe', border: '2px solid #ddd6fe',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                      padding: 6, textAlign: 'center', gap: 3 }}>
+          <p style={{ fontSize: 9, fontWeight: 900, color: '#1e1b4b', lineHeight: 1.2 }}>{cromo.nombre}</p>
+          <p style={{ fontSize: 7.5, color: '#6b7280' }}>{cromo.expansion}</p>
+          <span style={{ fontSize: 7, background: '#dcfce7', color: '#166534', borderRadius: 20, padding: '2px 6px', fontWeight: 700 }}>
+            🔄 De sobra
           </span>
         </div>
       </div>
@@ -83,10 +82,50 @@ function CartaAlbum({ cromo, estado }) {
   );
 }
 
-/* ── Álbum principal ── */
+/* ── Carpeta de sección (acordeón) ── */
+function Carpeta({ seccion, cartas }) {
+  const [abierta, setAbierta] = useState(true);
+
+  return (
+    <section className="mb-6">
+      {/* Header carpeta */}
+      <button
+        onClick={() => setAbierta(a => !a)}
+        className="w-full flex items-center gap-3 mb-3 group text-left"
+      >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 transition-transform group-hover:scale-110"
+             style={{ background: 'linear-gradient(135deg, #ede9fe, #c4b5fd)' }}>
+          📁
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <h2 className="font-black text-mc-dark text-base truncate">{seccion}</h2>
+            <span className="text-xs font-bold text-mc-purple bg-mc-light px-2.5 py-0.5 rounded-full flex-shrink-0">
+              {cartas.length} cromo{cartas.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        </div>
+        <span className="text-mc-muted text-sm transition-transform"
+              style={{ transform: abierta ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+          ▼
+        </span>
+      </button>
+
+      {abierta && (
+        <div className="flex flex-wrap gap-3">
+          {cartas
+            .sort((a, b) => a.numero - b.numero)
+            .map(cromo => <CartaAlbum key={cromo._id} cromo={cromo} />)}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function Album() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [busqueda, setBusqueda] = useState('');
 
   useEffect(() => {
     axiosClient.get('/users/profile')
@@ -95,116 +134,89 @@ export default function Album() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div key={i} className="rounded-xl bg-mc-light animate-pulse" style={{ aspectRatio: '2/3' }} />
-          ))}
-        </div>
+  if (loading) return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex flex-wrap gap-3">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div key={i} className="rounded-xl bg-mc-light animate-pulse flex-shrink-0" style={{ width: 80, height: 112 }} />
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
 
-  const repetidos = profile?.inventario.repetidos || [];
-  const faltas    = profile?.inventario.faltas    || [];
+  const misRepes = profile?.inventario.repetidos || [];
 
-  // Todas las cartas del usuario (sin duplicados)
-  const todasMap = new Map();
-  repetidos.forEach(c => todasMap.set(c._id, { cromo: c, estado: 'repetidos' }));
-  faltas.forEach(c => {
-    if (!todasMap.has(c._id)) todasMap.set(c._id, { cromo: c, estado: 'faltas' });
-  });
-  const todas = [...todasMap.values()];
+  // Filtrar por búsqueda
+  const filtradas = busqueda.trim()
+    ? misRepes.filter(c =>
+        c.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+        c.expansion?.toLowerCase().includes(busqueda.toLowerCase()) ||
+        String(c.numero).includes(busqueda)
+      )
+    : misRepes;
 
-  // Agrupar por colección (expansion)
-  const porColeccion = todas.reduce((acc, { cromo, estado }) => {
-    const col = cromo.expansion || 'Sin colección';
-    if (!acc[col]) acc[col] = [];
-    acc[col].push({ cromo, estado });
+  // Agrupar por sección (expansion)
+  const porSeccion = filtradas.reduce((acc, cromo) => {
+    const sec = cromo.expansion || 'Sin sección';
+    if (!acc[sec]) acc[sec] = [];
+    acc[sec].push(cromo);
     return acc;
   }, {});
 
-  const colecciones = Object.entries(porColeccion).sort(([a], [b]) => a.localeCompare(b));
-  const totalCartas = todas.length;
-  const cartasTengo = repetidos.length;
+  const secciones = Object.entries(porSeccion).sort(([a], [b]) => a.localeCompare(b));
 
-  // Empty state
-  if (totalCartas === 0) {
-    return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-        <div className="text-6xl mb-4 animate-float inline-block">📖</div>
-        <h2 className="text-2xl font-black text-mc-dark mb-3">Tu álbum está vacío</h2>
-        <p className="text-mc-muted mb-6 max-w-md mx-auto">
-          Ve a <strong>Mis Repes</strong> y añade tus primeras cartas. Las podrás ver aquí agrupadas por colección.
-        </p>
-        <a href="/repes" className="btn-yellow inline-flex">
-          <span>➕</span> Añadir mis primeras cartas
-        </a>
-      </div>
-    );
-  }
+  if (misRepes.length === 0) return (
+    <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+      <div className="text-6xl mb-4 animate-float inline-block">📖</div>
+      <h2 className="text-2xl font-black text-mc-dark mb-3">Tu álbum está vacío</h2>
+      <p className="text-mc-muted mb-6 max-w-md mx-auto">
+        Ve a <strong>Mis Repes</strong> y añade tus repetidas. Aquí las verás organizadas por secciones.
+      </p>
+      <Link to="/repes" className="btn-yellow inline-flex">
+        ➕ Añadir mis repetidas
+      </Link>
+    </div>
+  );
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-mc-dark mb-1">Mi Álbum Virtual</h1>
-        <p className="text-mc-muted text-sm mb-5">
-          Haz clic en una carta para voltearla · Verde = la tengo · Gris = me falta
-        </p>
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex-1">
+          <h1 className="text-3xl font-black text-mc-dark mb-1">Mi Álbum Virtual</h1>
+          <p className="text-mc-muted text-sm">
+            {misRepes.length} cromos repetidos · {secciones.length} sección{secciones.length !== 1 ? 'es' : ''}
+            · Haz clic en una carta para voltearla
+          </p>
+        </div>
 
-        {/* Progreso global */}
-        <div className="card-white p-5">
-          <ProgressBar
-            current={cartasTengo}
-            total={totalCartas}
-            label={`Cartas conseguidas de ${colecciones.length} colección${colecciones.length !== 1 ? 'es' : ''}`}
+        {/* Buscador */}
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-mc-muted">🔍</span>
+          <input
+            type="text"
+            placeholder="Buscar cromo…"
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+            className="pl-9 pr-4 py-2.5 rounded-xl text-sm text-mc-dark outline-none transition-all"
+            style={{ background: '#f5f3ff', border: '2px solid #ddd6fe', width: 220 }}
+            onFocus={e  => (e.target.style.borderColor = '#5b21b6')}
+            onBlur={e   => (e.target.style.borderColor = '#ddd6fe')}
           />
-          {cartasTengo === totalCartas && totalCartas > 0 && (
-            <div className="mt-3 flex items-center gap-2 text-amber-600 animate-badge-pop">
-              <span>🏆</span>
-              <span className="font-black">¡Tienes todas las cartas de tu colección!</span>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Una sección por colección */}
-      {colecciones.map(([coleccion, cartas]) => {
-        const tengo    = cartas.filter(c => c.estado === 'repetidos').length;
-        const total    = cartas.length;
-        const completa = tengo === total;
+      {/* Sin resultados de búsqueda */}
+      {busqueda && filtradas.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-mc-muted">No hay cromos que coincidan con "{busqueda}"</p>
+        </div>
+      )}
 
-        return (
-          <section key={coleccion} className="mb-10">
-            {/* Header de colección */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h2 className="font-black text-lg text-mc-dark">{coleccion}</h2>
-                  {completa && (
-                    <span className="badge bg-amber-100 text-amber-700 border border-amber-200 animate-badge-pop">
-                      🏆 Completa
-                    </span>
-                  )}
-                </div>
-                <ProgressBar current={tengo} total={total} label={`${tengo} de ${total} cartas`} />
-              </div>
-            </div>
-
-            {/* Grid de cartas */}
-            <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2">
-              {cartas
-                .sort((a, b) => a.cromo.numero - b.cromo.numero)
-                .map(({ cromo, estado }) => (
-                  <CartaAlbum key={cromo._id} cromo={cromo} estado={estado} />
-                ))}
-            </div>
-          </section>
-        );
-      })}
+      {/* Carpetas por sección */}
+      {secciones.map(([seccion, cartas]) => (
+        <Carpeta key={seccion} seccion={seccion} cartas={cartas} />
+      ))}
     </div>
   );
 }

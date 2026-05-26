@@ -2,10 +2,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 
 const NAV_AUTH = [
-  { to: '/album',     label: 'Álbum'     },
-  { to: '/repes',     label: 'Mis Repes' },
-  { to: '/descubrir', label: 'Descubrir' },
-  { to: '/dashboard', label: 'Matches'   },
+  { to: '/album',    label: 'Mi Álbum'  },
+  { to: '/repes',    label: 'Mis Repes' },
+  { to: '/buscador', label: 'Buscador'  },
 ];
 
 export default function Navbar() {
@@ -59,6 +58,12 @@ export default function Navbar() {
           {user ? (
             <>
               <span className="hidden sm:block text-sm text-white/50 font-medium">{user.username}</span>
+              <Link to="/profile"
+                className={`text-sm font-bold px-4 py-2 rounded-lg border border-white/15 transition-all ${
+                  location.pathname === '/profile' ? 'text-white bg-white/10' : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}>
+                Mi Perfil
+              </Link>
               {user.isAdmin && (
                 <Link to="/admin"
                   className="text-xs font-bold px-3 py-1.5 rounded-full border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/10 transition-colors">
