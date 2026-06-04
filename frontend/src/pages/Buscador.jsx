@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import { toast }   from 'react-hot-toast';
 import { useUserStore } from '../store/userStore';
@@ -23,8 +23,7 @@ const RAREZA_CARD = {
   'common':      { borde: '#6b7280', glow: 'rgba(107,114,128,0.4)', bg: 'linear-gradient(160deg,#1f2937,#4b5563)', emoji: '🃏' },
 };
 
-/* ── Modal carta grande ──────────────────────────────────── */
-function ModalCartaGrande({ carta, usuario, onClose }) {
+function ModalCartaGrande({ carta, usuario, onClose, onChatear }) {
   const [saliendo, setSaliendo] = useState(false);
   const [holoStyle, setHoloStyle] = useState({});
   const cardRef = useRef(null);
@@ -78,7 +77,7 @@ function ModalCartaGrande({ carta, usuario, onClose }) {
         }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Carta */}
+        
         <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
@@ -134,7 +133,7 @@ function ModalCartaGrande({ carta, usuario, onClose }) {
           }} />
         </div>
 
-        {/* Info contacto */}
+        
         <div style={{
           background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(14px)',
           border: '1px solid rgba(255,255,255,0.18)', borderRadius: 16,
@@ -159,6 +158,17 @@ function ModalCartaGrande({ carta, usuario, onClose }) {
               <ContactLink href={`tel:${usuario.telefono}`} icon="📞" label={usuario.telefono}
                 style={{ background: 'rgba(34,197,94,0.18)', border: '1px solid rgba(34,197,94,0.35)', color: '#86efac' }} />
             )}
+            <button
+              onClick={() => onChatear(usuario._id, [])}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '8px 14px', borderRadius: 12,
+                background: 'linear-gradient(135deg, #5b21b6, #7c3aed)',
+                border: 'none', color: '#fff', fontSize: 13,
+                fontWeight: 800, cursor: 'pointer',
+              }}>
+              💬 Chatear en MatchCard
+            </button>
           </div>
         </div>
 
@@ -175,7 +185,6 @@ function ModalCartaGrande({ carta, usuario, onClose }) {
   );
 }
 
-/* ── Enlace de contacto con intersticial de 5 s ──────────── */
 function ContactLink({ href, icon, label, style }) {
   const [countdown, setCountdown] = useState(null);
 
@@ -209,7 +218,7 @@ function ContactLink({ href, icon, label, style }) {
         </span>
       </a>
 
-      {/* Intersticial */}
+      
       {countdown !== null && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 2000,
@@ -223,7 +232,7 @@ function ContactLink({ href, icon, label, style }) {
             maxWidth: 340, width: '90%',
             boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
           }}>
-            {/* Espacio de anuncio */}
+            
             <div style={{
               background: 'linear-gradient(135deg, #2d1b69, #1e3a8a)',
               border: '1px dashed rgba(167,139,250,0.3)',
@@ -258,7 +267,6 @@ function ContactLink({ href, icon, label, style }) {
   );
 }
 
-/* ── Modal upgrade premium (con Stripe real) ─────────────── */
 function ModalUpgrade({ onClose }) {
   const [loading, setLoading] = useState(false);
 
@@ -266,7 +274,6 @@ function ModalUpgrade({ onClose }) {
     setLoading(true);
     try {
       const { data } = await axiosClient.post('/stripe/checkout');
-      // Redirigir a la pasarela segura de Stripe
       window.location.href = data.url;
     } catch (err) {
       toast.error(err.response?.data?.message || 'Error al iniciar el pago');
@@ -303,7 +310,7 @@ function ModalUpgrade({ onClose }) {
           Con el Pase consigues búsquedas ilimitadas por menos que dos sobres.
         </p>
 
-        {/* Precio */}
+        
         <div style={{
           background: 'linear-gradient(135deg, #fef9c3, #fef3c7)',
           border: '2px solid #fcd34d', borderRadius: 16,
@@ -315,7 +322,7 @@ function ModalUpgrade({ onClose }) {
           </p>
         </div>
 
-        {/* Beneficios */}
+        
         <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0, margin: '0 0 24px', fontSize: 13, color: '#374151' }}>
           {[
             '✅ Búsquedas ilimitadas cada día',
@@ -327,7 +334,7 @@ function ModalUpgrade({ onClose }) {
           ))}
         </ul>
 
-        {/* Botón Stripe */}
+        
         <button
           onClick={handlePago}
           disabled={loading}
@@ -367,7 +374,6 @@ function ModalUpgrade({ onClose }) {
   );
 }
 
-/* ── Sección Pro (visible para usuarios gratuitos) ──────── */
 function SeccionPro({ onUpgrade }) {
   return (
     <div className="relative overflow-hidden rounded-2xl"
@@ -377,7 +383,7 @@ function SeccionPro({ onUpgrade }) {
            boxShadow: '0 8px 40px rgba(76,29,149,0.25)',
          }}>
 
-      {/* Decoración de fondo */}
+      
       <div style={{
         position: 'absolute', top: -40, right: -40,
         width: 180, height: 180, borderRadius: '50%',
@@ -392,7 +398,7 @@ function SeccionPro({ onUpgrade }) {
       }} />
 
       <div className="relative p-6">
-        {/* Cabecera */}
+        
         <div className="flex items-start gap-4 mb-5">
           <div className="badge-float flex-shrink-0 text-4xl">🌟</div>
           <div>
@@ -414,7 +420,7 @@ function SeccionPro({ onUpgrade }) {
           </div>
         </div>
 
-        {/* Qué incluye — grid 2 col */}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
           {[
             { icon: '🔍', text: 'Búsquedas ilimitadas cada día' },
@@ -434,7 +440,7 @@ function SeccionPro({ onUpgrade }) {
           ))}
         </div>
 
-        {/* Precio + CTA */}
+        
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div style={{
             background: 'rgba(255,255,255,0.08)',
@@ -470,7 +476,7 @@ function SeccionPro({ onUpgrade }) {
           </div>
         </div>
 
-        {/* Comparativa libre vs pro */}
+        
         <div style={{
           marginTop: 20, paddingTop: 16,
           borderTop: '1px solid rgba(167,139,250,0.2)',
@@ -490,7 +496,6 @@ function SeccionPro({ onUpgrade }) {
   );
 }
 
-/* ── Chip carta clickable ────────────────────────────────── */
 function ChipCarta({ carta, onClick }) {
   const e = RAREZA_ESTILO[carta.rareza] ?? RAREZA_ESTILO.common;
   return (
@@ -508,8 +513,7 @@ function ChipCarta({ carta, onClick }) {
   );
 }
 
-/* ── Tarjeta de resultado ────────────────────────────────── */
-function TarjetaResultado({ resultado, onCartaClick, limitReached }) {
+function TarjetaResultado({ resultado, onCartaClick, limitReached, onChatear }) {
   const { usuario, cartasMeDa, cantidadYoDoy, esBidireccional } = resultado;
 
   return (
@@ -556,13 +560,13 @@ function TarjetaResultado({ resultado, onCartaClick, limitReached }) {
           </p>
         )}
 
-        {/* Datos de contacto — borrosos si limitReached */}
+        
         <div className="space-y-2 pt-3 border-t border-mc-border">
           <p className="text-[10px] font-black text-mc-muted uppercase tracking-wider mb-1">Contactar</p>
 
           {limitReached ? (
             <div style={{ position: 'relative' }}>
-              {/* Placeholder borroso */}
+              
               <div style={{ filter: 'blur(5px)', pointerEvents: 'none', userSelect: 'none', opacity: 0.7 }}>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold mb-1.5"
                      style={{ background: '#eef2ff', color: '#4338ca', border: '1px solid #c7d2fe' }}>
@@ -573,7 +577,7 @@ function TarjetaResultado({ resultado, onCartaClick, limitReached }) {
                   <span>📞</span><span>+34 600 000 000</span>
                 </div>
               </div>
-              {/* Overlay candado */}
+              
               <div style={{
                 position: 'absolute', inset: 0, display: 'flex',
                 alignItems: 'center', justifyContent: 'center',
@@ -601,6 +605,13 @@ function TarjetaResultado({ resultado, onCartaClick, limitReached }) {
               ) : (
                 <p className="text-[10px] text-mc-muted px-1">Sin teléfono registrado</p>
               )}
+              <button
+                onClick={() => onChatear(usuario._id, cartasMeDa)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-black transition-all hover:brightness-110 active:scale-95 text-white"
+                style={{ background: 'linear-gradient(135deg, #5b21b6, #7c3aed)' }}>
+                <span>💬</span>
+                <span>Chat en MatchCard</span>
+              </button>
             </>
           )}
         </div>
@@ -609,7 +620,6 @@ function TarjetaResultado({ resultado, onCartaClick, limitReached }) {
   );
 }
 
-/* ── Página principal ────────────────────────────────────── */
 export default function Buscador() {
   const [query,             setQuery]             = useState('');
   const [categoria,         setCategoria]         = useState('Todos');
@@ -622,6 +632,7 @@ export default function Buscador() {
   const [showUpgrade,       setShowUpgrade]       = useState(false);
 
   const { user, setUser }   = useUserStore();
+  const navigate            = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const timerRef = useRef(null);
@@ -629,17 +640,15 @@ export default function Buscador() {
 
   const [pagoExitoso, setPagoExitoso] = useState(false);
 
-  // Detectar retorno exitoso desde Stripe y refrescar usuario desde la API
   useEffect(() => {
     if (searchParams.get('upgraded') === 'true') {
       setSearchParams({}, { replace: true });
       setLimitReached(false);
-      // Refrescar usuario desde el servidor para obtener isPremium: true
       axiosClient.get('/auth/me')
         .then(({ data }) => { setUser(data.user); setPagoExitoso(true); })
-        .catch(() => { setPagoExitoso(true); }); // mostrar modal aunque falle el refresco
+        .catch(() => { setPagoExitoso(true); });
     }
-  }, []); // eslint-disable-line
+  }, []);
 
   const buscar = useCallback(async (nombre, cat) => {
     if (!nombre || nombre.trim().length < 2) {
@@ -679,10 +688,28 @@ export default function Buscador() {
     setModalData({ carta, usuario });
   }, []);
 
+  const proponerYChatear = useCallback(async (userBId, cartasMeDa) => {
+    try {
+      const { data } = await axiosClient.post('/matches/proponer', {
+        userBId,
+        cromosDeAparaB: [],
+        cromosDeBparaA: (cartasMeDa || []).map(c => c._id),
+      });
+      navigate(`/chat/${data.match._id}`);
+    } catch (err) {
+      if (err.response?.status === 409) {
+        const matchId = err.response.data.matchId;
+        navigate(matchId ? `/chat/${matchId}` : '/dashboard');
+      } else {
+        toast.error(err.response?.data?.message || 'Error al iniciar chat');
+      }
+    }
+  }, [navigate]);
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 min-h-[calc(100vh-4rem)]">
 
-      {/* Header */}
+      
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-mc-dark">Buscador de Faltas</h1>
@@ -691,7 +718,7 @@ export default function Buscador() {
           </p>
         </div>
 
-        {/* Contador búsquedas */}
+        
         {searchesLeft !== null && !limitReached && (
           <div className="flex-shrink-0 text-right">
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black"
@@ -724,7 +751,7 @@ export default function Buscador() {
         )}
       </div>
 
-      {/* Banner límite alcanzado */}
+      
       {limitReached && (
         <div className="rounded-2xl p-4 mb-5 flex items-center gap-3"
              style={{ background: '#fef9c3', border: '1px solid #fcd34d' }}>
@@ -744,7 +771,7 @@ export default function Buscador() {
         </div>
       )}
 
-      {/* Caja de búsqueda */}
+      
       <div className="rounded-2xl p-5 mb-5"
            style={{ background: 'white', border: '1px solid #ddd6fe',
                     boxShadow: '0 4px 20px rgba(91,33,182,0.07)' }}>
@@ -784,7 +811,7 @@ export default function Buscador() {
         )}
       </div>
 
-      {/* Estado vacío */}
+      
       {resultados === null && !loading && (
         <div className="space-y-8">
           <div className="text-center py-10">
@@ -796,14 +823,14 @@ export default function Buscador() {
             </p>
           </div>
 
-          {/* Sección Pro visible siempre para usuarios gratuitos */}
+          
           {!user?.isPremium && (
             <SeccionPro onUpgrade={() => setShowUpgrade(true)} />
           )}
         </div>
       )}
 
-      {/* Sin resultados */}
+      
       {resultados !== null && resultados.length === 0 && !loading && (
         <div className="text-center py-16 rounded-2xl"
              style={{ background: 'white', border: '1px solid #ddd6fe' }}>
@@ -817,7 +844,7 @@ export default function Buscador() {
         </div>
       )}
 
-      {/* Resultados */}
+      
       {resultados !== null && resultados.length > 0 && (
         <>
           <div className="flex items-center justify-between mb-4">
@@ -837,11 +864,12 @@ export default function Buscador() {
                 resultado={r}
                 onCartaClick={abrirModal}
                 limitReached={limitReached}
+                onChatear={proponerYChatear}
               />
             ))}
           </div>
 
-          {/* Sección Pro debajo de resultados para usuarios gratuitos */}
+          
           {!user?.isPremium && (
             <div className="mt-8">
               <SeccionPro onUpgrade={() => setShowUpgrade(true)} />
@@ -850,12 +878,13 @@ export default function Buscador() {
         </>
       )}
 
-      {/* Modales */}
+      
       {modalData && (
         <ModalCartaGrande
           carta={modalData.carta}
           usuario={modalData.usuario}
           onClose={() => setModalData(null)}
+          onChatear={proponerYChatear}
         />
       )}
       {showUpgrade  && <ModalUpgrade     onClose={() => setShowUpgrade(false)} />}
@@ -864,7 +893,6 @@ export default function Buscador() {
   );
 }
 
-/* ── Modal confirmación de pago ──────────────────────────── */
 function ModalPagoExitoso({ onClose }) {
   return (
     <div
@@ -890,7 +918,7 @@ function ModalPagoExitoso({ onClose }) {
         }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Destellos de fondo */}
+        
         <div style={{
           position: 'absolute', top: -60, right: -60,
           width: 200, height: 200, borderRadius: '50%',
@@ -904,12 +932,12 @@ function ModalPagoExitoso({ onClose }) {
           pointerEvents: 'none',
         }} />
 
-        {/* Icono animado */}
+        
         <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 20 }} className="pop-in inline-block">
           👑
         </div>
 
-        {/* Título */}
+        
         <h2 style={{
           fontWeight: 900, fontSize: 26, margin: '0 0 8px',
           background: 'linear-gradient(135deg, #FFD700, #FFA500)',
@@ -922,7 +950,7 @@ function ModalPagoExitoso({ onClose }) {
           Ya eres Coleccionista Pro 🌟
         </p>
 
-        {/* Beneficios desbloqueados */}
+        
         <div style={{
           background: 'rgba(255,255,255,0.07)',
           border: '1px solid rgba(255,215,0,0.2)',

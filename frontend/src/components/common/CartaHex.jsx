@@ -62,14 +62,14 @@ export default function CartaHex({ cromo, size = 130, glow = false, className = 
             overflow: 'hidden',
           }}
         >
-          {/* Brillo superior */}
+          
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '40%',
             background: 'linear-gradient(to bottom, rgba(255,255,255,0.18), transparent)',
             pointerEvents: 'none',
           }} />
 
-          {/* Número */}
+          
           <div className="flex justify-between w-full">
             <span style={{ fontSize: size * 0.08, color: 'rgba(255,255,255,0.6)', fontWeight: 700, fontFamily: 'monospace' }}>
               #{String(cromo.numero).padStart(3, '0')}
@@ -77,7 +77,7 @@ export default function CartaHex({ cromo, size = 130, glow = false, className = 
             <span style={{ fontSize: size * 0.075, color: 'rgba(255,255,255,0.5)' }}>◆</span>
           </div>
 
-          {/* Arte */}
+          
           <div className="flex items-center justify-center flex-1 py-1">
             {cromo.imagenUrl ? (
               <img
@@ -94,7 +94,7 @@ export default function CartaHex({ cromo, size = 130, glow = false, className = 
             )}
           </div>
 
-          {/* Nombre */}
+          
           <div className="w-full text-center">
             <p style={{
               fontSize: size * 0.09,

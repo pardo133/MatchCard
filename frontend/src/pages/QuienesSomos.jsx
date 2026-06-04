@@ -13,7 +13,7 @@ export default function QuienesSomos() {
   return (
     <div className="min-h-screen" style={{ background: '#fff' }}>
 
-      {/* ── HERO ── */}
+      
       <section style={{
         background: 'linear-gradient(135deg, #0f0e1a 0%, #1e1b4b 50%, #3730a3 100%)',
         paddingTop: '5rem',
@@ -38,7 +38,7 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* ── NUESTRA HISTORIA ── */}
+      
       <section className="py-16 px-6" style={{ background: '#f9fafb' }}>
         <div className="max-w-3xl mx-auto">
           <div className="rounded-3xl p-10 md:p-14"
@@ -67,7 +67,7 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* ── MISIÓN ── */}
+      
       <section className="py-16 px-6" style={{ background: '#fff' }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -109,7 +109,7 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* ── EQUIPO ── */}
+      
       <section className="py-16 px-6" style={{ background: '#f9fafb' }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -138,7 +138,7 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      
       <section className="py-16 px-6"
                style={{ background: 'linear-gradient(135deg, #0f0e1a 0%, #1e1b4b 50%, #4338ca 100%)' }}>
         <div className="max-w-2xl mx-auto text-center">

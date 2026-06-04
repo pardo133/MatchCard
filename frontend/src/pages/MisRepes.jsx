@@ -37,7 +37,7 @@ function FondoGalactico() {
 function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
   const r     = rz(cromo.rareza);
   const tieneImg = !!cromo.imagenUrl;
-  const height   = Math.round(width * 1.4);   // ratio 5:7 como carta real
+  const height   = Math.round(width * 1.4);
 
   const borderColor = seleccionada ? '#FFD700' : `${r.borde}70`;
   const shadow = seleccionada
@@ -50,7 +50,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
          style={{ width, flexShrink: 0 }}
          onClick={() => onSelect(cromo)}>
 
-      {/* Badge "Nueva" */}
+      
       {esNueva && (
         <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
           <span className="bg-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap">
@@ -59,7 +59,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
         </div>
       )}
 
-      {/* La carta */}
+      
       <div className="overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
            style={{
              width,
@@ -81,7 +81,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               onError={e => { e.target.style.display = 'none'; }}
             />
-            {/* Overlay nombre */}
+            
             <div style={{
               position: 'absolute', bottom: 0, left: 0, right: 0,
               background: 'linear-gradient(transparent, rgba(0,0,0,0.88))',
@@ -94,7 +94,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
                 textShadow: '0 1px 4px rgba(0,0,0,0.9)',
               }}>{cromo.nombre}</p>
             </div>
-            {/* Brillo holográfico sutil */}
+            
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: '35%',
               background: 'linear-gradient(to bottom, rgba(255,255,255,0.12), transparent)',
@@ -108,23 +108,23 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
             alignItems: 'center', justifyContent: 'space-between', padding: '8px 6px',
             position: 'relative',
           }}>
-            {/* Brillo superior */}
+            
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: '40%',
               background: 'linear-gradient(to bottom, rgba(255,255,255,0.15), transparent)',
               pointerEvents: 'none', borderRadius: `${Math.round(width * 0.09)}px ${Math.round(width * 0.09)}px 0 0`,
             }} />
-            {/* Número */}
+            
             {cromo.numero > 0 && (
               <span style={{ fontSize: Math.round(width * 0.08), color: 'rgba(255,255,255,0.5)', fontWeight: 700, fontFamily: 'monospace', alignSelf: 'flex-start', zIndex: 1 }}>
                 #{String(cromo.numero).padStart(3,'0')}
               </span>
             )}
-            {/* Emoji central */}
+            
             <span style={{ fontSize: Math.round(width * 0.35), filter: 'drop-shadow(0 3px 10px rgba(0,0,0,0.5))', zIndex: 1, lineHeight: 1 }}>
               {r.emoji}
             </span>
-            {/* Nombre */}
+            
             <div style={{ width: '100%', textAlign: 'center', zIndex: 1 }}>
               <p style={{
                 color: '#fff', fontSize: Math.round(width * 0.095), fontWeight: 900,
@@ -154,7 +154,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Encabezado */}
+      
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1 min-w-0 pr-2">
           <p className="text-[10px] font-black uppercase tracking-widest text-white/50">🔄 Tengo repetida</p>
@@ -167,7 +167,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
         </button>
       </div>
 
-      {/* Carta grande con holo */}
+      
       <div className="flex justify-center mb-4"
            ref={cardRef}
            onMouseMove={e => {
@@ -179,7 +179,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
            }}
            style={{ cursor: 'crosshair' }}>
         <div className="relative" style={{ userSelect: 'none' }}>
-          {/* La carta en grande */}
+          
           <div style={{
             width: 160, height: 224,
             borderRadius: 14,
@@ -234,7 +234,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
               </div>
             )}
 
-            {/* Overlay holográfico reactivo al ratón */}
+            
             <div style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
               background: `radial-gradient(circle at ${holoPos.x}% ${holoPos.y}%, rgba(255,215,0,0.28) 0%, rgba(167,139,250,0.2) 35%, rgba(0,229,255,0.1) 60%, transparent 80%)`,
@@ -245,7 +245,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
         </div>
       </div>
 
-      {/* Badge rareza */}
+      
       <div className="flex justify-center mb-4">
         <span className="text-[10px] font-black px-3 py-1 rounded-full"
               style={{ background: `${r.borde}22`, border: `1px solid ${r.borde}60`, color: r.borde }}>
@@ -253,7 +253,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
         </span>
       </div>
 
-      {/* Botón foto */}
+      
       <button onClick={() => onGestionar(cromo)}
         className="mt-auto w-full py-2.5 rounded-xl font-black text-sm uppercase tracking-wide transition-all active:scale-95"
         style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#1a1200',
@@ -277,7 +277,7 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
       </p>
 
       <div className="flex-1 overflow-y-auto pr-1 space-y-3">
-        {/* Sección */}
+        
         <div>
           <label className="block text-xs font-bold text-white/60 mb-1">Sección / Colección <span className="text-red-400">*</span></label>
           <input list="sec-list" placeholder="Ej: Pokémon TCG, LaLiga 2024…"
@@ -289,7 +289,7 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
           </datalist>
         </div>
 
-        {/* Nombre */}
+        
         <div>
           <label className="block text-xs font-bold text-white/60 mb-1">Nombre del cromo <span className="text-red-400">*</span></label>
           <input placeholder="Ej: Pikachu, Messi, Goku…"
@@ -298,7 +298,7 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
             style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }} />
         </div>
 
-        {/* Número + Rareza (opcionales) */}
+        
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className="block text-xs font-bold text-white/60 mb-1">Número <span className="text-white/30">(opcional)</span></label>
@@ -319,7 +319,7 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
           </div>
         </div>
 
-        {/* Categoría */}
+        
         <div>
           <label className="block text-xs font-bold text-white/60 mb-1">Categoría</label>
           <div className="grid grid-cols-2 gap-1.5">
@@ -335,7 +335,7 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
           </div>
         </div>
 
-        {/* Foto */}
+        
         <div onClick={() => fotoRef.current?.click()}
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 cursor-pointer hover:bg-white/10 transition-all"
           style={{ background: 'rgba(255,255,255,0.06)', border: '1px dashed rgba(255,255,255,0.18)' }}>
@@ -524,7 +524,7 @@ export default function MisRepes() {
 
       <div className="flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto">
 
-        {/* HEADER */}
+        
         <div className="px-6 pt-6 pb-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
@@ -547,7 +547,7 @@ export default function MisRepes() {
             </div>
           </div>
 
-          {/* Stats */}
+          
           <div className="flex gap-3 mt-3">
             {[
               { n: misRepes.length,        l: 'Repetidas',  c: 'text-green-600'  },
@@ -561,18 +561,18 @@ export default function MisRepes() {
           </div>
         </div>
 
-        {/* CUERPO */}
+        
         <div className="flex flex-1 gap-0 overflow-hidden px-6 pb-6">
 
-          {/* GRID GALÁCTICO */}
+          
           <div className="flex-1 rounded-2xl overflow-hidden relative flex flex-col"
                style={{ background: 'linear-gradient(145deg, #1e0a3c 0%, #2d1263 40%, #1a0a4e 100%)', minWidth: 0 }}>
             <div className="absolute inset-0 grid-energy-bg opacity-60 pointer-events-none" />
             <FondoGalactico />
 
-            {/* Controles */}
+            
             <div className="relative z-10 px-4 pt-4 pb-3 flex-shrink-0">
-              {/* Chips de sección */}
+              
               <div className="flex gap-1.5 overflow-x-auto pb-1.5 mb-2.5" style={{ scrollbarWidth: 'none' }}>
                 {secciones.map(sec => (
                   <button key={sec}
@@ -593,7 +593,7 @@ export default function MisRepes() {
                 ))}
               </div>
 
-              {/* Buscador */}
+              
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
                 <input placeholder="Buscar cromo..."
@@ -603,7 +603,7 @@ export default function MisRepes() {
               </div>
             </div>
 
-            {/* Grid de cromos */}
+            
             <div className="flex-1 overflow-y-auto px-4 pb-4 relative z-10">
               {filtrados.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center py-12">
@@ -633,7 +633,7 @@ export default function MisRepes() {
             </div>
           </div>
 
-          {/* PANEL DERECHO */}
+          
           <div className="w-72 ml-4 flex-shrink-0 rounded-2xl relative overflow-hidden flex flex-col p-5"
                style={{ background: 'linear-gradient(160deg, #2d1263 0%, #1e0a3c 100%)',
                         border: '1px solid rgba(167,139,250,0.2)' }}>

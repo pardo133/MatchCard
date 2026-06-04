@@ -25,10 +25,8 @@ const matchSchema = new mongoose.Schema(
       default: 'pending',
     },
 
-    // Chat embebido
     mensajes: [mensajeSchema],
 
-    // Confirmaciones del intercambio físico
     confirmaciones: {
       userA: { type: Boolean, default: false },
       userB: { type: Boolean, default: false },

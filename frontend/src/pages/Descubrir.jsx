@@ -11,7 +11,6 @@ const PRIORIDAD_BADGE = {
   internacional: { label: 'Internacional', bg: '#f3e8ff', text: '#6b21a8', border: '#d8b4fe' },
 };
 
-/* ── Partículas de match ── */
 function BurstParticulas({ activo, color }) {
   const dots = useMemo(() => Array.from({ length: 12 }, (_, i) => ({
     angle: (i / 12) * 360,
@@ -39,7 +38,6 @@ function BurstParticulas({ activo, color }) {
   );
 }
 
-/* ── Tarjeta swipeable ── */
 function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
   const { usuario, distanciaKm, prioridad, cartasMeDa, cartasYoDoy, esBidireccional } = match;
   const badge = PRIORIDAD_BADGE[prioridad] || PRIORIDAD_BADGE.internacional;
@@ -48,7 +46,7 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
   const dragRef      = useRef({ startX: 0, startY: 0, dx: 0 });
   const cardRef      = useRef(null);
   const [dx,  setDx] = useState(0);
-  const [animating, setAnim] = useState(null); // 'right' | 'left' | null
+  const [animating, setAnim] = useState(null);
   const [burst, setBurst]    = useState(null);
 
   const rotation = dx * 0.08;
@@ -65,7 +63,6 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
     else onPasar();
   }, [onPasar, onProponer]);
 
-  // Mouse / Touch handlers
   const onStart = (clientX) => { dragRef.current = { startX: clientX, dx: 0 }; };
   const onMove  = (clientX) => {
     const d = clientX - dragRef.current.startX;
@@ -90,13 +87,13 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
 
   return (
     <div className="relative select-none" style={{ zIndex: 10 - indice }}>
-      {/* Partículas */}
+      
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <BurstParticulas activo={burst === 'right'} color="#22c55e" />
         <BurstParticulas activo={burst === 'left'}  color="#ef4444" />
       </div>
 
-      {/* Label flotante swipe */}
+      
       {swipingRight && (
         <div className="absolute top-6 left-6 z-20 pop-in">
           <span className="font-black text-2xl px-4 py-2 rounded-xl border-4 border-green-500 text-green-500 uppercase tracking-widest"
@@ -114,7 +111,7 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
         </div>
       )}
 
-      {/* Tarjeta */}
+      
       <div
         ref={cardRef}
         onMouseDown={e => onStart(e.clientX)}
@@ -133,13 +130,13 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
           touchAction: 'none',
         }}
       >
-        {/* Gradiente tint mientras arrastra */}
+        
         {(swipingRight || swipingLeft) && (
           <div className="absolute inset-0 pointer-events-none z-10 transition-opacity"
                style={{ background: swipingRight ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)' }} />
         )}
 
-        {/* Header usuario */}
+        
         <div className="flex items-center justify-between px-5 pt-5 pb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
@@ -164,13 +161,13 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
           </div>
         </div>
 
-        {/* Carta principal con glow */}
+        
         <div className="flex justify-center py-5"
              style={{ background: 'linear-gradient(to bottom, #f5f3ff, #ffffff)' }}>
           <CartaHex cromo={cartaPrincipal} size={170} glow />
         </div>
 
-        {/* Info cartas */}
+        
         <div className="px-5 pb-4 space-y-3">
           <div>
             <p className="text-[10px] font-black text-green-600 uppercase tracking-wider mb-2">
@@ -211,7 +208,7 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
           )}
         </div>
 
-        {/* Instrucción de arrastre */}
+        
         <div className="px-5 pb-3 text-center">
           <p className="text-[10px] text-mc-muted">← Arrastra para pasar · Arrastra para proponer →</p>
         </div>
@@ -220,7 +217,6 @@ function TarjetaSwipe({ match, onPasar, onProponer, indice }) {
   );
 }
 
-/* ── Página principal ── */
 function useGeolocalizacion(onOk) {
   const [estado, setEstado] = useState('idle');
   const solicitar = useCallback(() => {
@@ -246,7 +242,7 @@ export default function Descubrir() {
     try {
       await axiosClient.put('/users/ubicacion', { longitud: lon, latitud: lat });
       toast.success('📍 Ubicación actualizada', { duration: 2000 });
-    } catch { /* silencioso */ }
+    } catch {  }
   }, []);
 
   const { estado: geoEstado, solicitar } = useGeolocalizacion(guardarUbicacion);
@@ -292,7 +288,7 @@ export default function Descubrir() {
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6 min-h-[calc(100vh-4rem)]">
-      {/* Header */}
+      
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-2xl font-black text-mc-dark">Descubrir</h1>
@@ -332,14 +328,14 @@ export default function Descubrir() {
         </div>
       ) : (
         <div className="relative" style={{ minHeight: 600 }}>
-          {/* Tarjeta de fondo (siguiente) */}
+          
           {siguiente && (
             <div className="absolute inset-0 pointer-events-none" style={{ transform: 'scale(0.94) translateY(16px)', opacity: 0.4, zIndex: 1 }}>
               <div className="card-white rounded-3xl h-full" />
             </div>
           )}
 
-          {/* Tarjeta activa */}
+          
           <TarjetaSwipe
             key={matchActual.usuario._id}
             match={matchActual}
@@ -348,7 +344,7 @@ export default function Descubrir() {
             indice={0}
           />
 
-          {/* Botones físicos */}
+          
           <div className="flex gap-4 mt-5 justify-center">
             <button onClick={handlePasar} disabled={enviando}
               className="w-16 h-16 rounded-full flex flex-col items-center justify-center gap-0.5 font-black border-2 border-red-200 bg-white text-red-500 hover:bg-red-50 hover:border-red-400 active:scale-90 transition-all shadow-md disabled:opacity-50">

@@ -4,7 +4,6 @@ import axiosClient from '../api/axiosClient';
 import { useUserStore } from '../store/userStore';
 import { toast } from 'react-hot-toast';
 
-/* Mismas reglas que el backend */
 function checkPassword(pw) {
   return {
     length:    pw.length >= 8,
@@ -85,14 +84,14 @@ export default function Register() {
         <div className="card-white p-8 rounded-2xl">
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            {/* Username */}
+            
             <div>
               <label className="block text-sm font-bold text-mc-dark mb-1.5">Nombre de usuario</label>
               <input name="username" type="text" placeholder="AshKetchum"
                 required onChange={handleChange} className="input-light" />
             </div>
 
-            {/* Email */}
+            
             <div>
               <label className="block text-sm font-bold text-mc-dark mb-1.5">Email</label>
               <input name="email" type="email" placeholder="ash@pokemon.com"
@@ -102,7 +101,7 @@ export default function Register() {
               </p>
             </div>
 
-            {/* Contraseña + indicador */}
+            
             <div>
               <label className="block text-sm font-bold text-mc-dark mb-1.5">Contraseña</label>
               <input name="password" type="password" placeholder="Mín. 8 chars, 1 mayúscula, 1 símbolo"
@@ -110,14 +109,14 @@ export default function Register() {
               <PasswordStrength password={form.password} />
             </div>
 
-            {/* Ciudad */}
+            
             <div>
               <label className="block text-sm font-bold text-mc-dark mb-1.5">Ciudad</label>
               <input name="ciudad" type="text" placeholder="Madrid, Barcelona…"
                 required onChange={handleChange} className="input-light" />
             </div>
 
-            {/* Teléfono */}
+            
             <div>
               <label className="block text-sm font-bold text-mc-dark mb-1.5">Teléfono (opcional)</label>
               <input name="telefono" type="tel" placeholder="+34 600 000 000"

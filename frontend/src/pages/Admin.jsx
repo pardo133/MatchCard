@@ -7,7 +7,6 @@ import { toast }         from 'react-hot-toast';
 
 const EMPTY_CROMO = { numero: '', nombre: '', coleccion: '', rareza: 'common', imagenUrl: '' };
 
-/* ══ STATS CARD ══ */
 function StatCard({ icon, label, value, color }) {
   return (
     <div className="card-white p-5 rounded-2xl text-center">
@@ -18,7 +17,6 @@ function StatCard({ icon, label, value, color }) {
   );
 }
 
-/* ══ FILA USUARIO ══ */
 function FilaUsuario({ usuario, onToggleAdmin, onToggleActivo }) {
   return (
     <div className={`flex items-center gap-3 p-3 rounded-xl border transition-all
@@ -59,7 +57,6 @@ function FilaUsuario({ usuario, onToggleAdmin, onToggleActivo }) {
   );
 }
 
-/* ══ PÁGINA ADMIN ══ */
 export default function Admin() {
   const { user }     = useUserStore();
   const [tab, setTab] = useState('stats');
@@ -149,7 +146,7 @@ export default function Admin() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
+      
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl"
              style={{ background: 'linear-gradient(135deg, #5b21b6, #7c3aed)' }}>
@@ -161,7 +158,7 @@ export default function Admin() {
         </div>
       </div>
 
-      {/* Tabs */}
+      
       <div className="flex gap-2 mb-6 bg-mc-light p-1 rounded-xl">
         {TABS.map(({ id, label }) => (
           <button key={id} onClick={() => setTab(id)}
@@ -176,7 +173,7 @@ export default function Admin() {
         <div className="flex justify-center py-12"><div className="animate-spin text-3xl text-mc-purple">✦</div></div>
       ) : (
 
-        /* ── STATS ── */
+        
         tab === 'stats' && stats && (
           <div className="space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -187,7 +184,7 @@ export default function Admin() {
               <StatCard icon="📍" label="Ciudades"      value={stats.ciudades}   color="text-pink-600"  />
             </div>
 
-            {/* Info del sistema */}
+            
             <div className="card-white p-6 rounded-2xl">
               <h2 className="font-black text-mc-dark mb-4">Sistema</h2>
               <div className="space-y-2">
@@ -207,10 +204,10 @@ export default function Admin() {
         )
       )}
 
-      {/* ── CARTAS ── */}
+      
       {tab === 'cartas' && (
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Formulario */}
+          
           <div className="card-white p-6 rounded-2xl">
             <h2 className="font-black text-mc-dark mb-4">➕ Añadir carta al catálogo</h2>
             <form onSubmit={handleAddCromo} className="space-y-3">
@@ -251,7 +248,7 @@ export default function Admin() {
             </form>
           </div>
 
-          {/* Lista */}
+          
           <div className="card-white p-6 rounded-2xl">
             <h2 className="font-black text-mc-dark mb-4">
               Catálogo <span className="text-mc-muted font-normal text-sm">({cromos.length})</span>
@@ -278,7 +275,7 @@ export default function Admin() {
         </div>
       )}
 
-      {/* ── USUARIOS ── */}
+      
       {tab === 'usuarios' && (
         <div className="space-y-4">
           <div className="flex items-center gap-3">

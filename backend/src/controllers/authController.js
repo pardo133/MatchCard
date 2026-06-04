@@ -6,7 +6,6 @@ import {
   sendPasswordResetEmail,
 } from '../services/emailService.js';
 
-/* ── Helpers ──────────────────────────────────────────────── */
 function generateToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
@@ -15,7 +14,6 @@ function randomToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
-// Reglas: mín. 8 chars, 1 mayúscula, 1 símbolo
 function validatePassword(password) {
   if (!password || password.length < 8)
     return 'La contraseña debe tener al menos 8 caracteres';
@@ -26,12 +24,10 @@ function validatePassword(password) {
   return null;
 }
 
-/* ── Register ─────────────────────────────────────────────── */
 export async function register(req, res, next) {
   try {
     const { username, email, password, ciudad, telefono } = req.body;
 
-    // Validar contraseña
     const passError = validatePassword(password);
     if (passError) return res.status(400).json({ message: passError });
 
@@ -53,19 +49,16 @@ export async function register(req, res, next) {
       inventario: { repetidos: [], faltas: [] },
     });
 
-    // Enviar correo de verificación (no bloqueante)
     sendVerificationEmail(email, emailVerifyToken).catch(err =>
       console.error('[email] verify send failed:', err.message)
     );
 
-    // Devolvemos token para que puedan navegar, pero verán el aviso de verificación
     res.status(201).json({ token: generateToken(user._id), user });
   } catch (error) {
     next(error);
   }
 }
 
-/* ── Login ────────────────────────────────────────────────── */
 export async function login(req, res, next) {
   try {
     const { email, password } = req.body;
@@ -75,27 +68,16 @@ export async function login(req, res, next) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
-    // TODO: reactivar verificación de email cuando SMTP esté configurado
-    // if (!user.isEmailVerified) {
-    //   return res.status(403).json({
-    //     message: 'Debes verificar tu email antes de iniciar sesión',
-    //     needsVerification: true,
-    //     email: user.email,
-    //   });
-    // }
-
     res.json({ token: generateToken(user._id), user });
   } catch (error) {
     next(error);
   }
 }
 
-/* ── GetMe ────────────────────────────────────────────────── */
 export async function getMe(req, res) {
   res.json({ user: req.user });
 }
 
-/* ── Verificar email ──────────────────────────────────────── */
 export async function verifyEmail(req, res, next) {
   try {
     const { token } = req.params;
@@ -115,7 +97,6 @@ export async function verifyEmail(req, res, next) {
   }
 }
 
-/* ── Reenviar verificación ────────────────────────────────── */
 export async function resendVerification(req, res, next) {
   try {
     const { email } = req.body;
@@ -135,7 +116,6 @@ export async function resendVerification(req, res, next) {
   }
 }
 
-/* ── Forgot password ──────────────────────────────────────── */
 export async function forgotPassword(req, res, next) {
   try {
     const { email } = req.body;
@@ -146,7 +126,7 @@ export async function forgotPassword(req, res, next) {
     }
 
     const token   = randomToken();
-    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+    const expires = new Date(Date.now() + 60 * 60 * 1000);
 
     user.passwordResetToken   = token;
     user.passwordResetExpires = expires;
@@ -159,7 +139,6 @@ export async function forgotPassword(req, res, next) {
   }
 }
 
-/* ── Reset password ───────────────────────────────────────── */
 export async function resetPassword(req, res, next) {
   try {
     const { token }    = req.params;

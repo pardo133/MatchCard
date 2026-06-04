@@ -24,7 +24,7 @@ function FilaMatch({ match, userId, onUpdate }) {
 
   return (
     <div className="card-white rounded-2xl p-4 border border-mc-border/50 hover:border-mc-purple/30 transition-all">
-      {/* Header */}
+      
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-mc-light border border-mc-border flex items-center justify-center text-sm">👤</div>
@@ -40,7 +40,7 @@ function FilaMatch({ match, userId, onUpdate }) {
         </span>
       </div>
 
-      {/* Cartas */}
+      
       <div className="flex gap-4 mb-3 overflow-x-auto pb-1">
         <div>
           <p className="text-[10px] font-bold text-green-600 mb-1">📤 Yo doy</p>
@@ -59,7 +59,7 @@ function FilaMatch({ match, userId, onUpdate }) {
         </div>
       </div>
 
-      {/* Acciones */}
+      
       <div className="flex gap-2">
         {match.status === 'pending' && !soyA && (
           <>
@@ -148,7 +148,7 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      {/* Header */}
+      
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-black text-mc-dark">Mis Matches</h1>
@@ -160,7 +160,7 @@ export default function Dashboard() {
         </Link>
       </div>
 
-      {/* Tabs */}
+      
       <div className="flex gap-1 bg-mc-light p-1 rounded-xl mb-6">
         {TABS.map(({ id, label, n, color }) => (
           <button key={id} onClick={() => setTab(id)}
@@ -177,7 +177,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Lista */}
+      
       {loading ? (
         <div className="flex justify-center py-20"><div className="animate-spin text-3xl text-mc-purple">✦</div></div>
       ) : tabData[activeTab].length === 0 ? (

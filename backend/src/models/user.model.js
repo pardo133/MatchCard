@@ -12,21 +12,17 @@ const userSchema = new mongoose.Schema(
     isAdmin:  { type: Boolean, default: false },
     isActive: { type: Boolean, default: true  },
 
-    // Email verification
     isEmailVerified:  { type: Boolean, default: false },
     emailVerifyToken: { type: String, select: false },
 
-    // Password reset
     passwordResetToken:   { type: String, select: false },
     passwordResetExpires: { type: Date,   select: false },
 
-    // Monetización: premium via Stripe
     isPremium:        { type: Boolean, default: false },
     stripeCustomerId: { type: String,  default: '' },
 
-    // Límite diario para usuarios gratuitos
     searchesToday:  { type: Number, default: 0 },
-    lastSearchDate: { type: String, default: '' }, // 'YYYY-MM-DD'
+    lastSearchDate: { type: String, default: '' },
 
     inventario: {
       repetidos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cromo' }],

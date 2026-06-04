@@ -18,6 +18,9 @@ import MisRepes                from './pages/MisRepes';
 import Album                   from './pages/Album';
 import Admin                   from './pages/Admin';
 import Buscador                from './pages/Buscador';
+import Dashboard               from './pages/Dashboard';
+import Descubrir               from './pages/Descubrir';
+import Chat                    from './pages/Chat';
 import QuienesSomos            from './pages/QuienesSomos';
 
 function PrivateRoute({ children }) {
@@ -25,8 +28,6 @@ function PrivateRoute({ children }) {
   return token ? children : <Navigate to="/login" replace />;
 }
 
-// Refresca los datos del usuario desde la API al arrancar la app.
-// Garantiza que isPremium y otros campos estén siempre actualizados.
 function AuthSync() {
   const { token, setUser, logout } = useUserStore();
 
@@ -34,8 +35,8 @@ function AuthSync() {
     if (!token) return;
     axiosClient.get('/auth/me')
       .then(({ data }) => setUser(data.user))
-      .catch(() => logout()); // token inválido → cerrar sesión
-  }, [token]); // eslint-disable-line
+      .catch(() => logout());
+  }, [token]);
 
   return null;
 }
@@ -59,7 +60,7 @@ export default function App() {
         <AuthSync />
         <Navbar />
         <Routes>
-          {/* Públicas */}
+          
           <Route path="/"                        element={<Home />} />
           <Route path="/quienes-somos"           element={<QuienesSomos />} />
           <Route path="/login"                   element={<Login />} />
@@ -68,16 +69,19 @@ export default function App() {
           <Route path="/reset-password/:token"   element={<ResetPassword />} />
           <Route path="/verify-email/:token"     element={<VerifyEmail />} />
 
-          {/* Semi-privadas (token existe pero email no verificado) */}
+          
           <Route path="/verificar-email-pendiente"
             element={<PrivateRoute><VerifyEmailPendiente /></PrivateRoute>} />
 
-          {/* Privadas */}
+          
           <Route path="/profile"  element={<PrivateRoute><Profile  /></PrivateRoute>} />
           <Route path="/repes"    element={<PrivateRoute><MisRepes /></PrivateRoute>} />
           <Route path="/album"    element={<PrivateRoute><Album    /></PrivateRoute>} />
-          <Route path="/buscador" element={<PrivateRoute><Buscador /></PrivateRoute>} />
-          <Route path="/admin"    element={<PrivateRoute><Admin    /></PrivateRoute>} />
+          <Route path="/buscador"    element={<PrivateRoute><Buscador   /></PrivateRoute>} />
+          <Route path="/dashboard"   element={<PrivateRoute><Dashboard  /></PrivateRoute>} />
+          <Route path="/descubrir"   element={<PrivateRoute><Descubrir  /></PrivateRoute>} />
+          <Route path="/chat/:id"    element={<PrivateRoute><Chat       /></PrivateRoute>} />
+          <Route path="/admin"       element={<PrivateRoute><Admin      /></PrivateRoute>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

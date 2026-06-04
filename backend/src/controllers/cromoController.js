@@ -10,7 +10,6 @@ export async function getAllCromos(req, res, next) {
   } catch (error) { next(error); }
 }
 
-// Crea la carta si no existe (catálogo compartido) y la añade al inventario del usuario
 export async function createCromo(req, res, next) {
   try {
     const { numero, nombre, coleccion, rareza, imagenUrl, addTo, categoria } = req.body;
@@ -63,7 +62,6 @@ export async function createCromo(req, res, next) {
   }
 }
 
-/* ─── Matchmaking con límite diario ─────────────────────── */
 export async function buscarMatch(req, res, next) {
   try {
     const { nombre, categoria } = req.query;
@@ -73,8 +71,7 @@ export async function buscarMatch(req, res, next) {
       return res.status(400).json({ message: 'Escribe al menos 2 caracteres para buscar' });
     }
 
-    // ── Comprobación y actualización del límite diario ──
-    const todayStr = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+    const todayStr = new Date().toISOString().slice(0, 10);
     const userLimits = await User.findById(userId)
       .select('isPremium searchesToday lastSearchDate')
       .lean();
@@ -86,7 +83,6 @@ export async function buscarMatch(req, res, next) {
       let count = userLimits.searchesToday || 0;
 
       if (userLimits.lastSearchDate !== todayStr) {
-        // Nuevo día: reiniciar contador
         count = 0;
         await User.findByIdAndUpdate(userId, {
           searchesToday:  1,
@@ -103,7 +99,6 @@ export async function buscarMatch(req, res, next) {
       searchesLeft = limitReached ? 0 : Math.max(0, FREE_DAILY_LIMIT - count);
     }
 
-    // ── Búsqueda en catálogo ──
     const CATEGORIAS_VALIDAS = ['Pokémon', 'Deportes', 'Anime', 'Otros'];
     const queryMongo = { nombre: { $regex: nombre.trim(), $options: 'i' } };
     if (categoria && CATEGORIAS_VALIDAS.includes(categoria)) {
@@ -146,7 +141,6 @@ export async function buscarMatch(req, res, next) {
           _id:      u._id,
           username: u.username,
           ciudad:   u.ciudad,
-          // Contact info only for users within their daily limit
           email:    limitReached ? null : u.email,
           telefono: limitReached ? null : (u.telefono || ''),
         },
@@ -167,7 +161,6 @@ export async function buscarMatch(req, res, next) {
   }
 }
 
-/* ─── Búsqueda pública (sin auth) para el hero de Home ──── */
 export async function buscarPublico(req, res, next) {
   try {
     const { nombre } = req.query;

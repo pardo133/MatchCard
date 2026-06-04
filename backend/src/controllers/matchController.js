@@ -3,7 +3,6 @@ import { User }  from '../models/user.model.js';
 import { Cromo } from '../models/cromo.model.js';
 import { getIO }  from '../socket/socket.handler.js';
 
-/* ─── Buscar matches con geolocalización ───────────────────────── */
 export async function buscarMatches(req, res, next) {
   try {
     const userId = req.user._id;
@@ -58,7 +57,6 @@ export async function buscarMatches(req, res, next) {
                       'inventario.repetidos': 1, 'inventario.faltas': 1 } },
       ]);
     } else {
-      // Fallback sin coordenadas → búsqueda por ciudad y luego global
       const raw = await User.find({
         _id:      { $ne: userId },
         isActive: true,
@@ -72,7 +70,6 @@ export async function buscarMatches(req, res, next) {
       }));
     }
 
-    // Enriquecer cada candidato con las cartas concretas del match
     const matchesEnriquecidos = await Promise.all(
       candidatos.map(async cand => {
         const repCand  = cand.inventario.repetidos.map(id => id.toString());
@@ -113,20 +110,18 @@ export async function buscarMatches(req, res, next) {
   }
 }
 
-/* ─── Proponer un match desde Descubrir ────────────────────────── */
 export async function proponerMatch(req, res, next) {
   try {
     const { userBId, cromosDeAparaB, cromosDeBparaA, distanciaKm, prioridad } = req.body;
     const userAId = req.user._id;
 
-    // Evitar duplicados pendientes
     const existe = await Match.findOne({
       $or: [
-        { userA: userAId, userB: userBId, status: 'pending' },
-        { userA: userBId, userB: userAId, status: 'pending' },
+        { userA: userAId, userB: userBId, status: { $in: ['pending', 'accepted'] } },
+        { userA: userBId, userB: userAId, status: { $in: ['pending', 'accepted'] } },
       ],
     });
-    if (existe) return res.status(409).json({ message: 'Ya existe un match pendiente con este usuario.' });
+    if (existe) return res.status(409).json({ message: 'Ya existe un match activo con este usuario.', matchId: existe._id });
 
     const match = await Match.create({
       userA: userAId,
@@ -138,7 +133,6 @@ export async function proponerMatch(req, res, next) {
       ciudad:    req.user.ciudad,
     });
 
-    // Notificar al usuario B
     const io = getIO();
     io.to(`user:${userBId}`).emit('nuevo_match_propuesto', {
       matchId:  match._id,
@@ -152,7 +146,6 @@ export async function proponerMatch(req, res, next) {
   }
 }
 
-/* ─── Mis matches (dashboard) ──────────────────────────────────── */
 export async function getMyMatches(req, res, next) {
   try {
     const matches = await Match.find({
@@ -162,7 +155,7 @@ export async function getMyMatches(req, res, next) {
       .populate('userB', 'username ciudad')
       .populate('cromosDeAparaB', 'nombre numero expansion imagenUrl rareza')
       .populate('cromosDeBparaA', 'nombre numero expansion imagenUrl rareza')
-      .select('-mensajes') // no enviar historial en listado
+      .select('-mensajes')
       .sort({ createdAt: -1 });
 
     res.json({ matches });
@@ -171,7 +164,6 @@ export async function getMyMatches(req, res, next) {
   }
 }
 
-/* ─── Actualizar status (aceptar / rechazar) ───────────────────── */
 export async function updateMatchStatus(req, res, next) {
   try {
     const { id }     = req.params;
@@ -194,7 +186,6 @@ export async function updateMatchStatus(req, res, next) {
   }
 }
 
-/* ─── Chat: obtener mensajes ───────────────────────────────────── */
 export async function getMensajes(req, res, next) {
   try {
     const { id } = req.params;
@@ -219,7 +210,6 @@ export async function getMensajes(req, res, next) {
   }
 }
 
-/* ─── Confirmar intercambio físico ─────────────────────────────── */
 export async function confirmarIntercambio(req, res, next) {
   try {
     const { id } = req.params;
@@ -244,7 +234,6 @@ export async function confirmarIntercambio(req, res, next) {
       confirmaciones: match.confirmaciones,
     });
 
-    // Ambos confirmaron → ejecutar transacción de inventarios
     if (match.confirmaciones.userA && match.confirmaciones.userB) {
       await ejecutarTransaccion(match);
 
@@ -262,11 +251,9 @@ export async function confirmarIntercambio(req, res, next) {
 async function ejecutarTransaccion(match) {
   const { userA, userB, cromosDeAparaB, cromosDeBparaA } = match;
 
-  // A da sus cartas a B
   await User.findByIdAndUpdate(userA, { $pull: { 'inventario.repetidos': { $in: cromosDeAparaB } } });
   await User.findByIdAndUpdate(userB, { $pull: { 'inventario.faltas':    { $in: cromosDeAparaB } } });
 
-  // B da sus cartas a A
   await User.findByIdAndUpdate(userB, { $pull: { 'inventario.repetidos': { $in: cromosDeBparaA } } });
   await User.findByIdAndUpdate(userA, { $pull: { 'inventario.faltas':    { $in: cromosDeBparaA } } });
 

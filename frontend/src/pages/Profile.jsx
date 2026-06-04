@@ -46,7 +46,7 @@ export default function Profile() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
 
-      {/* Header tarjeta */}
+      
       <div className="rounded-2xl p-6 mb-4"
            style={{ background: 'linear-gradient(135deg, #1e0a3c 0%, #2d1263 100%)',
                     border: '1px solid rgba(167,139,250,0.2)' }}>
@@ -62,7 +62,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Stats */}
+        
         <div className="flex gap-3 mt-5">
           {[
             { n: totalRepes,      l: 'Repetidas',  c: '#FFD700'  },
@@ -77,7 +77,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Datos de contacto */}
+      
       <div className="rounded-2xl p-6 mb-4"
            style={{ background: 'white', border: '1px solid #ddd6fe',
                     boxShadow: '0 4px 20px rgba(91,33,182,0.07)' }}>
@@ -104,7 +104,7 @@ export default function Profile() {
         </div>
 
         <div className="space-y-4">
-          {/* Email (solo lectura) */}
+          
           <div>
             <label className="block text-xs font-bold text-mc-muted mb-1.5 uppercase tracking-wider">
               ✉️ Email (visible para otros usuarios)
@@ -118,7 +118,7 @@ export default function Profile() {
             </p>
           </div>
 
-          {/* Teléfono */}
+          
           <div>
             <label className="block text-xs font-bold text-mc-muted mb-1.5 uppercase tracking-wider">
               📞 Teléfono (opcional)
@@ -143,7 +143,7 @@ export default function Profile() {
             )}
           </div>
 
-          {/* Ciudad */}
+          
           <div>
             <label className="block text-xs font-bold text-mc-muted mb-1.5 uppercase tracking-wider">
               📍 Ciudad
@@ -169,7 +169,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Secciones del usuario */}
+      
       {secciones.length > 0 && (
         <div className="rounded-2xl p-6"
              style={{ background: 'white', border: '1px solid #ddd6fe',

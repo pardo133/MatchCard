@@ -10,7 +10,6 @@ export function initSocket(httpServer) {
     cors: { origin: process.env.CLIENT_URL, methods: ['GET', 'POST'] },
   });
 
-  // ── Autenticación en el handshake ──────────────────────────────
   io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token;
     if (!token) return next(new Error('No autorizado'));
@@ -27,15 +26,12 @@ export function initSocket(httpServer) {
   });
 
   io.on('connection', (socket) => {
-    // Sala personal del usuario
     socket.join(`user:${socket.userId}`);
 
-    // ── Unirse a sala de chat de un match ──────────────────────
     socket.on('join_chat', ({ matchId }) => {
       socket.join(`chat:${matchId}`);
     });
 
-    // ── Enviar mensaje en el chat ──────────────────────────────
     socket.on('send_message', async ({ matchId, texto }) => {
       if (!texto?.trim() || !matchId) return;
 

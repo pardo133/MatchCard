@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 export const upload = multer({
   storage,
-  limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB
+  limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (/^image\/(jpeg|jpg|png|webp|gif)$/.test(file.mimetype)) cb(null, true);
     else cb(new Error('Solo se permiten imágenes (jpg, png, webp, gif)'));
@@ -26,7 +26,6 @@ export const upload = multer({
 export async function uploadCardPhoto(req, res) {
   if (!req.file) return res.status(400).json({ message: 'No se recibió ningún archivo' });
 
-  // URL relativa para que el proxy de Vite la sirva en desarrollo
   const url = `/uploads/${req.file.filename}`;
   res.json({ url, filename: req.file.filename });
 }

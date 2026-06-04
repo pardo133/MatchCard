@@ -4,7 +4,6 @@ import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-// Middleware: solo admins
 router.use(protect, (req, res, next) => {
   if (!req.user.isAdmin) return res.status(403).json({ message: 'Acceso solo para administradores' });
   next();

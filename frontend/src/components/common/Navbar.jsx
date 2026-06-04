@@ -2,9 +2,10 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 
 const NAV_AUTH = [
-  { to: '/album',    label: 'Mi Álbum'  },
-  { to: '/repes',    label: 'Mis Repes' },
-  { to: '/buscador', label: 'Buscador'  },
+  { to: '/album',     label: 'Mi Álbum'    },
+  { to: '/repes',     label: 'Mis Repes'   },
+  { to: '/buscador',  label: 'Buscador'    },
+  { to: '/dashboard', label: 'Mis Matches' },
 ];
 
 export default function Navbar() {
@@ -18,7 +19,7 @@ export default function Navbar() {
     <nav style={{ background: '#0f0e1a' }} className="sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
-        {/* Logo */}
+        
         <Link to="/" className="flex-shrink-0 select-none">
           <span className="font-black text-2xl tracking-tight" style={{ fontFamily: '"Nunito", sans-serif' }}>
             <span style={{
@@ -31,7 +32,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Center links */}
+        
         <div className="hidden md:flex items-center gap-1">
           {!user ? (
             <Link
@@ -53,7 +54,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Right actions */}
+        
         <div className="flex items-center gap-2">
           {user ? (
             <>
@@ -104,7 +105,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile nav — solo autenticado */}
+      
       {user && (
         <div className="md:hidden flex" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           {NAV_AUTH.map(({ to, label }) => (

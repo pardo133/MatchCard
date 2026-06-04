@@ -24,7 +24,7 @@ function CartaAlbum({ cromo }) {
       <div style={{ width: W, height: H, position: 'relative', transformStyle: 'preserve-3d',
                     transition: 'transform 0.5s', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0)' }}>
 
-        {/* Frente */}
+        
         <div style={{
           position: 'absolute', inset: 0, borderRadius: 8, overflow: 'hidden', backfaceVisibility: 'hidden',
           border: `2px solid ${r.borde}70`,
@@ -59,14 +59,14 @@ function CartaAlbum({ cromo }) {
               </p>
             </div>
           )}
-          {/* Badge ✓ */}
+          
           <div style={{ position: 'absolute', top: 3, right: 3, width: 14, height: 14, borderRadius: '50%',
                         background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ color: '#fff', fontSize: 7, fontWeight: 900 }}>✓</span>
           </div>
         </div>
 
-        {/* Reverso */}
+        
         <div style={{ position: 'absolute', inset: 0, borderRadius: 8, backfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)', background: '#ede9fe', border: '2px solid #ddd6fe',
                       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -82,13 +82,12 @@ function CartaAlbum({ cromo }) {
   );
 }
 
-/* ── Carpeta de sección (acordeón) ── */
 function Carpeta({ seccion, cartas }) {
   const [abierta, setAbierta] = useState(true);
 
   return (
     <section className="mb-6">
-      {/* Header carpeta */}
+      
       <button
         onClick={() => setAbierta(a => !a)}
         className="w-full flex items-center gap-3 mb-3 group text-left"
@@ -146,7 +145,6 @@ export default function Album() {
 
   const misRepes = profile?.inventario.repetidos || [];
 
-  // Filtrar por búsqueda
   const filtradas = busqueda.trim()
     ? misRepes.filter(c =>
         c.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -155,7 +153,6 @@ export default function Album() {
       )
     : misRepes;
 
-  // Agrupar por sección (expansion)
   const porSeccion = filtradas.reduce((acc, cromo) => {
     const sec = cromo.expansion || 'Sin sección';
     if (!acc[sec]) acc[sec] = [];
@@ -180,7 +177,7 @@ export default function Album() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header */}
+      
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
           <h1 className="text-3xl font-black text-mc-dark mb-1">Mi Álbum Virtual</h1>
@@ -190,7 +187,7 @@ export default function Album() {
           </p>
         </div>
 
-        {/* Buscador */}
+        
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-mc-muted">🔍</span>
           <input
@@ -206,14 +203,14 @@ export default function Album() {
         </div>
       </div>
 
-      {/* Sin resultados de búsqueda */}
+      
       {busqueda && filtradas.length === 0 && (
         <div className="text-center py-12">
           <p className="text-mc-muted">No hay cromos que coincidan con "{busqueda}"</p>
         </div>
       )}
 
-      {/* Carpetas por sección */}
+      
       {secciones.map(([seccion, cartas]) => (
         <Carpeta key={seccion} seccion={seccion} cartas={cartas} />
       ))}

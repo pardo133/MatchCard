@@ -6,7 +6,6 @@ import { useUserStore } from '../store/userStore';
 import CartaHex      from '../components/common/CartaHex';
 import { toast }     from 'react-hot-toast';
 
-/* ── Propuesta fija en la parte superior ── */
 function PropuestaIntercambio({ match, userId, confirmaciones, onConfirmar, confirmando }) {
   const soyA      = match.userA._id === userId;
   const misCartas = soyA ? match.cromosDeAparaB : match.cromosDeBparaA;
@@ -32,9 +31,9 @@ function PropuestaIntercambio({ match, userId, confirmaciones, onConfirmar, conf
         🤝 Propuesta de Intercambio
       </p>
 
-      {/* Visualización de las dos cartas */}
+      
       <div className="flex items-center justify-center gap-3 mb-3">
-        {/* Mis cartas */}
+        
         <div className="flex flex-col items-center gap-1">
           <p className="text-[10px] font-bold text-mc-muted">Yo doy</p>
           <div className="flex gap-1">
@@ -52,14 +51,14 @@ function PropuestaIntercambio({ match, userId, confirmaciones, onConfirmar, conf
           </div>
         </div>
 
-        {/* Icono intercambio */}
+        
         <div className="flex flex-col items-center gap-1">
           <div className="w-10 h-10 rounded-full bg-mc-light border-2 border-mc-border flex items-center justify-center text-lg">
             ⇄
           </div>
         </div>
 
-        {/* Sus cartas */}
+        
         <div className="flex flex-col items-center gap-1">
           <p className="text-[10px] font-bold text-mc-muted">Recibo</p>
           <div className="flex gap-1">
@@ -78,7 +77,7 @@ function PropuestaIntercambio({ match, userId, confirmaciones, onConfirmar, conf
         </div>
       </div>
 
-      {/* Estado de confirmaciones */}
+      
       <div className="flex items-center gap-2 mb-2">
         {[
           { label: 'Tú',   ok: yoConfirme },
@@ -109,7 +108,6 @@ function PropuestaIntercambio({ match, userId, confirmaciones, onConfirmar, conf
   );
 }
 
-/* ── Burbuja de mensaje ── */
 function Mensaje({ msg, esMio }) {
   const hora = new Date(msg.timestamp).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
   return (
@@ -130,7 +128,6 @@ function Mensaje({ msg, esMio }) {
   );
 }
 
-/* ── Página de Chat ── */
 export default function Chat() {
   const { id: matchId } = useParams();
   const navigate        = useNavigate();
@@ -148,12 +145,10 @@ export default function Chat() {
   const listRef   = useRef(null);
   const inputRef  = useRef(null);
 
-  // Scroll al fondo al recibir mensajes
   const scrollAbajo = () => {
     setTimeout(() => { listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' }); }, 50);
   };
 
-  // Cargar datos iniciales
   useEffect(() => {
     axiosClient.get(`/matches/${matchId}/mensajes`)
       .then(({ data }) => {
@@ -166,7 +161,6 @@ export default function Chat() {
       .finally(() => setLoading(false));
   }, [matchId]);
 
-  // Conectar al socket
   useEffect(() => {
     if (!socket) return;
     socket.emit('join_chat', { matchId });
@@ -233,7 +227,7 @@ export default function Chat() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto">
 
-      {/* ── Navbar del chat ── */}
+      
       <div className="bg-white border-b border-mc-border px-4 py-3 flex items-center gap-3 flex-shrink-0">
         <button onClick={() => navigate('/dashboard')}
           className="w-8 h-8 rounded-full hover:bg-mc-light flex items-center justify-center text-mc-muted hover:text-mc-dark transition-colors text-lg">
@@ -257,7 +251,7 @@ export default function Chat() {
         </span>
       </div>
 
-      {/* ── Propuesta de intercambio fija ── */}
+      
       <div className="flex-shrink-0">
         <PropuestaIntercambio
           match={match}
@@ -268,7 +262,7 @@ export default function Chat() {
         />
       </div>
 
-      {/* ── Mensajes ── */}
+      
       <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-1"
            style={{ background: '#f8f7ff' }}>
         {mensajes.length === 0 ? (
@@ -288,7 +282,7 @@ export default function Chat() {
         )}
       </div>
 
-      {/* ── Input de mensaje ── */}
+      
       {match.status !== 'completed' && (
         <div className="bg-white border-t border-mc-border px-4 py-3 flex gap-2 flex-shrink-0">
           <input

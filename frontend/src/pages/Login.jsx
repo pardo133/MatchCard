@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 export default function Login() {
   const [form,       setForm]       = useState({ email: '', password: '' });
   const [loading,    setLoading]    = useState(false);
-  const [unverified, setUnverified] = useState(null); // email pendiente de verificar
+  const [unverified, setUnverified] = useState(null);
   const [resending,  setResending]  = useState(false);
   const { setAuth }                 = useUserStore();
   const navigate                    = useNavigate();
@@ -62,7 +62,7 @@ export default function Login() {
 
         <div className="card-white p-8 rounded-2xl">
 
-          {/* ── Aviso email no verificado ── */}
+          
           {unverified && (
             <div className="mb-5 rounded-xl p-4"
                  style={{ background: '#fffbeb', border: '1px solid #fcd34d' }}>

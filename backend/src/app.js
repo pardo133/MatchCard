@@ -19,16 +19,12 @@ const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL }));
 
-// ─── WEBHOOK DE STRIPE ────────────────────────────────────────
-// DEBE ir antes de express.json() para recibir el body en crudo
-// y poder verificar la firma de Stripe.
 app.post(
   '/api/stripe/webhook',
   express.raw({ type: 'application/json' }),
   stripeWebhook
 );
 
-// ─── Resto de rutas (necesitan JSON parseado) ─────────────────
 app.use(express.json());
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

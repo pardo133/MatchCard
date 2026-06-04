@@ -66,7 +66,6 @@ function CategoryCard({ emoji, title, desc, gradient }) {
   );
 }
 
-/* ── Buscador del Hero ── */
 function HeroBuscador({ usuario }) {
   const [query,    setQuery]    = useState('');
   const [results,  setResults]  = useState(null);
@@ -98,7 +97,7 @@ function HeroBuscador({ usuario }) {
 
   return (
     <div className="relative w-full max-w-2xl mx-auto mt-8">
-      {/* Input */}
+      
       <div className="relative">
         <span className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl pointer-events-none">🔍</span>
         <input
@@ -123,7 +122,7 @@ function HeroBuscador({ usuario }) {
         )}
       </div>
 
-      {/* Resultados preview */}
+      
       {results !== null && (
         <div className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-50 shadow-2xl"
              style={{ background: 'white', border: '1px solid #e0e7ff' }}>
@@ -179,7 +178,6 @@ function HeroBuscador({ usuario }) {
   );
 }
 
-/* ── HOME ── */
 export default function Home() {
   const { user }  = useUserStore();
   const scrollRef = useRef(null);
@@ -188,7 +186,7 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: '#fff' }}>
 
-      {/* HERO */}
+      
       <section style={{ background: 'linear-gradient(180deg, #fafafe 0%, #fff 100%)', paddingTop: '5rem', paddingBottom: '4rem' }}>
         <div className="max-w-4xl mx-auto px-6 text-center">
 
@@ -209,7 +207,7 @@ export default function Home() {
             y contacta directamente para hacer el intercambio.
           </p>
 
-          {/* BUSCADOR */}
+          
           <HeroBuscador usuario={user} />
 
           {!user && (
@@ -228,7 +226,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CATEGORÍAS */}
+      
       <section id="categorias" style={{ background: '#111827', paddingBottom: '3.5rem' }}>
         <div className="max-w-7xl mx-auto px-6 pt-10 pb-6 flex items-end justify-between">
           <div>
@@ -257,7 +255,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ¿POR QUÉ MATCHCARD? */}
+      
       <section className="py-16 px-6" style={{ background: '#f9fafb' }}>
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-black text-gray-900 text-3xl mb-3 tracking-tight">¿Por qué MatchCard?</h2>
@@ -296,7 +294,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA registro */}
+      
       {!user && (
         <section className="py-16 px-6"
                  style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 60%, #6d28d9 100%)' }}>
@@ -321,7 +319,7 @@ export default function Home() {
         </section>
       )}
 
-      {/* Footer */}
+      
       <footer style={{ background: '#0f0e1a', borderTop: '1px solid rgba(255,255,255,0.06)' }}
               className="py-6 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">

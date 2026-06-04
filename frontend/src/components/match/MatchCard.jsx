@@ -30,7 +30,7 @@ export default function MatchCard({ match, currentUserId, onAccept, onReject }) 
 
   return (
     <div className="card-pokemon p-5 animate-slide-in group">
-      {/* Header */}
+      
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-pokemon-blue/20 border border-pokemon-blue/30 flex items-center justify-center text-lg">
@@ -46,7 +46,7 @@ export default function MatchCard({ match, currentUserId, onAccept, onReject }) 
         </span>
       </div>
 
-      {/* Intercambio */}
+      
       <div className="grid grid-cols-2 gap-3 mb-4">
         <div className="bg-pokemon-dark/60 rounded-xl p-3 border border-pokemon-border">
           <p className="text-xs font-semibold text-green-400 mb-2 flex items-center gap-1">
@@ -66,7 +66,7 @@ export default function MatchCard({ match, currentUserId, onAccept, onReject }) 
         </div>
       </div>
 
-      {/* Score indicator */}
+      
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="text-xs text-gray-500">Compatibilidad</span>
