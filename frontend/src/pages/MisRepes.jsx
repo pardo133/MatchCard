@@ -424,7 +424,8 @@ export default function MisRepes() {
   const [saving,        setSaving]        = useState(false);
   const [seccion,       setSeccion]       = useState('Todas');
   const [busqueda,      setBusqueda]      = useState('');
-  const [seleccionada,  setSel]           = useState(null);
+  const [seleccionada,  setSelRaw]        = useState(null);
+  const [mobilePanel,   setMobilePanel]   = useState('grid'); // 'grid' | 'panel'
   const [fotoModal,     setFotoModal]     = useState(null);
   const [fotosMap,      setFotosMap]      = useState({});
   const [form,          setForm]          = useState(FORM_VACIO);
@@ -443,7 +444,8 @@ export default function MisRepes() {
 
   useEffect(() => { cargar(); }, [cargar]);
 
-  const setF = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const setF   = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const setSel = (cromo) => { setSelRaw(cromo); if (cromo) setMobilePanel('panel'); };
 
   const handleFoto = (file) => {
     setFotoFile(file);
@@ -524,8 +526,8 @@ export default function MisRepes() {
 
       <div className="flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto">
 
-        
-        <div className="px-6 pt-6 pb-4 flex-shrink-0">
+
+        <div className="px-4 md:px-6 pt-4 md:pt-6 pb-3 md:pb-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-black text-mc-dark">Mis Repetidas</h1>
@@ -561,11 +563,28 @@ export default function MisRepes() {
           </div>
         </div>
 
-        
-        <div className="flex flex-1 gap-0 overflow-hidden px-6 pb-6">
+        {/* Tabs móvil */}
+        <div className="md:hidden flex mx-4 mb-2 rounded-xl overflow-hidden flex-shrink-0"
+             style={{ background: 'rgba(30,10,60,0.8)', border: '1px solid rgba(167,139,250,0.2)' }}>
+          <button onClick={() => setMobilePanel('grid')}
+            className="flex-1 py-2.5 text-xs font-black transition-all"
+            style={mobilePanel === 'grid'
+              ? { background: 'linear-gradient(135deg,#FFD700,#FFA500)', color: '#1a1200' }
+              : { color: 'rgba(255,255,255,0.5)' }}>
+            🃏 Mis Repes ({filtrados.length})
+          </button>
+          <button onClick={() => { setMobilePanel('panel'); setSelRaw(null); }}
+            className="flex-1 py-2.5 text-xs font-black transition-all"
+            style={mobilePanel === 'panel'
+              ? { background: 'linear-gradient(135deg,#FFD700,#FFA500)', color: '#1a1200' }
+              : { color: 'rgba(255,255,255,0.5)' }}>
+            ➕ Añadir
+          </button>
+        </div>
 
-          
-          <div className="flex-1 rounded-2xl overflow-hidden relative flex flex-col"
+        <div className="flex flex-1 gap-0 overflow-hidden px-4 md:px-6 pb-4 md:pb-6">
+
+          <div className={`flex-1 rounded-2xl overflow-hidden relative flex-col ${mobilePanel === 'grid' ? 'flex' : 'hidden md:flex'}`}
                style={{ background: 'linear-gradient(145deg, #1e0a3c 0%, #2d1263 40%, #1a0a4e 100%)', minWidth: 0 }}>
             <div className="absolute inset-0 grid-energy-bg opacity-60 pointer-events-none" />
             <FondoGalactico />
@@ -611,7 +630,7 @@ export default function MisRepes() {
                   <p className="font-black text-white/60 text-sm mb-1">
                     {busqueda ? 'Sin resultados' : seccion !== 'Todas' ? `Sin cromos en "${seccion}"` : 'Todavía no tienes repetidas'}
                   </p>
-                  <p className="text-white/30 text-xs">Usa el panel de la derecha para añadir</p>
+                  <p className="text-white/30 text-xs">Pulsa <span className="md:hidden">➕ Añadir</span><span className="hidden md:inline">el panel de la derecha</span> para añadir</p>
                 </div>
               ) : (
                 <div className="flex flex-wrap gap-3 pt-2">
@@ -634,7 +653,7 @@ export default function MisRepes() {
           </div>
 
           
-          <div className="w-72 ml-4 flex-shrink-0 rounded-2xl relative overflow-hidden flex flex-col p-5"
+          <div className={`md:w-72 md:ml-4 w-full flex-shrink-0 rounded-2xl relative overflow-hidden flex-col p-5 ${mobilePanel === 'panel' ? 'flex' : 'hidden md:flex'}`}
                style={{ background: 'linear-gradient(160deg, #2d1263 0%, #1e0a3c 100%)',
                         border: '1px solid rgba(167,139,250,0.2)' }}>
             <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
@@ -646,7 +665,7 @@ export default function MisRepes() {
                 <PanelDetalle
                   cromo={fotosMap[seleccionada._id] ? { ...seleccionada, imagenUrl: fotosMap[seleccionada._id] } : seleccionada}
                   onGestionar={c => setFotoModal(c)}
-                  onDeselect={() => setSel(null)}
+                  onDeselect={() => { setSel(null); setMobilePanel('grid'); }}
                 />
               ) : (
                 <FormAnadir
