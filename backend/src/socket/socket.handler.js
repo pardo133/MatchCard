@@ -7,7 +7,10 @@ let io;
 
 export function initSocket(httpServer) {
   io = new Server(httpServer, {
-    cors: { origin: process.env.CLIENT_URL, methods: ['GET', 'POST'] },
+    cors: {
+      origin: (process.env.CLIENT_URL || '').split(',').map(o => o.trim()).filter(Boolean),
+      methods: ['GET', 'POST'],
+    },
   });
 
   io.use(async (socket, next) => {
