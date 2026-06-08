@@ -1,7 +1,7 @@
 import { Cromo } from '../models/cromo.model.js';
 import { User }  from '../models/user.model.js';
 
-const FREE_DAILY_LIMIT = 3;
+const FREE_DAILY_LIMIT = Infinity; // temporalmente gratis para todos
 
 export async function getAllCromos(req, res, next) {
   try {
