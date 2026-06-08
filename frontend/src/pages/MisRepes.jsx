@@ -153,9 +153,9 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
   const r = rz(cromo.rareza);
 
   return (
-    <div className="h-full flex flex-col">
-      
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col h-full overflow-y-auto">
+
+      <div className="flex items-center justify-between mb-3">
         <div className="flex-1 min-w-0 pr-2">
           <p className="text-[10px] font-black uppercase tracking-widest text-white/50">🔄 Tengo repetida</p>
           <h2 className="text-lg font-black text-white leading-tight truncate">{cromo.nombre}</h2>
@@ -167,8 +167,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
         </button>
       </div>
 
-      
-      <div className="flex justify-center mb-4"
+      <div className="flex justify-center mb-3"
            ref={cardRef}
            onMouseMove={e => {
              const rect = cardRef.current?.getBoundingClientRect();
@@ -179,9 +178,9 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
            }}
            style={{ cursor: 'crosshair' }}>
         <div className="relative" style={{ userSelect: 'none' }}>
-          
           <div style={{
-            width: 160, height: 224,
+            width: 'min(160px, 42vw)',
+            aspectRatio: '2 / 2.8',
             borderRadius: 14,
             border: `2px solid ${r.borde}`,
             boxShadow: `0 0 28px ${r.glow}, 0 8px 32px rgba(0,0,0,0.5)`,
@@ -255,7 +254,7 @@ function PanelDetalle({ cromo, onGestionar, onDeselect }) {
 
       
       <button onClick={() => onGestionar(cromo)}
-        className="mt-auto w-full py-2.5 rounded-xl font-black text-sm uppercase tracking-wide transition-all active:scale-95"
+        className="mt-4 w-full py-2.5 rounded-xl font-black text-sm uppercase tracking-wide transition-all active:scale-95"
         style={{ background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#1a1200',
                  boxShadow: '0 4px 16px rgba(255,165,0,0.4)' }}>
         📸 Cambiar foto
@@ -633,7 +632,8 @@ export default function MisRepes() {
                   <p className="text-white/30 text-xs">Pulsa <span className="md:hidden">➕ Añadir</span><span className="hidden md:inline">el panel de la derecha</span> para añadir</p>
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-3 pt-2">
+                <div className="grid pt-2 gap-3"
+                     style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))' }}>
                   {filtrados.map(cromo => {
                     const cromoFinal = fotosMap[cromo._id] ? { ...cromo, imagenUrl: fotosMap[cromo._id] } : cromo;
                     return (
