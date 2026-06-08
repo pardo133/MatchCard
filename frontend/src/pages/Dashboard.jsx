@@ -45,7 +45,7 @@ function FilaMatch({ match, userId, onUpdate }) {
         <div>
           <p className="text-[10px] font-bold text-green-600 mb-1">📤 Yo doy</p>
           <div className="flex gap-1.5">
-            {misCartas?.slice(0, 3).map(c => <CartaHex key={c._id} cromo={c} size={56} />)}
+            {misCartas?.slice(0, 3).map(c => <CartaHex key={c._id} cromo={c} size={80} />)}
             {misCartas?.length > 3 && <span className="text-xs text-mc-muted self-center">+{misCartas.length - 3}</span>}
           </div>
         </div>
@@ -53,7 +53,7 @@ function FilaMatch({ match, userId, onUpdate }) {
         <div>
           <p className="text-[10px] font-bold text-mc-purple mb-1">📥 Recibo</p>
           <div className="flex gap-1.5">
-            {susCartas?.slice(0, 3).map(c => <CartaHex key={c._id} cromo={c} size={56} />)}
+            {susCartas?.slice(0, 3).map(c => <CartaHex key={c._id} cromo={c} size={80} />)}
             {susCartas?.length > 3 && <span className="text-xs text-mc-muted self-center">+{susCartas.length - 3}</span>}
           </div>
         </div>

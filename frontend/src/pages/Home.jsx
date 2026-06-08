@@ -547,20 +547,8 @@ export default function Home() {
       )}
 
       <footer style={{ background: '#0f0e1a', borderTop: '1px solid rgba(255,255,255,0.06)' }} className="py-6 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all group-hover:scale-110"
-                 style={{ background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)' }}>
-              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-                <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="white" strokeWidth="2" fill="none"/>
-                <circle cx="12" cy="12" r="4.8" stroke="white" strokeWidth="2" fill="none"/>
-                <circle cx="17.6" cy="6.4" r="1.3" fill="white"/>
-              </svg>
-            </div>
-            <span className="text-sm font-semibold text-gray-500 group-hover:text-white transition-colors">@matchcard_oficial</span>
-          </a>
+        <div className="max-w-7xl mx-auto flex items-center justify-center">
           <p className="text-gray-600 text-xs text-center">© 2026 MatchCard — Plataforma de Intercambio de Cromos</p>
-          <div className="w-40 hidden sm:block" />
         </div>
       </footer>
     </div>

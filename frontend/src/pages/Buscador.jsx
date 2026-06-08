@@ -781,8 +781,12 @@ export default function Buscador() {
             ref={inputRef} type="text"
             placeholder="Escribe el nombre del cromo que te falta… (ej: Pikachu)"
             value={query} onChange={handleQueryChange}
-            className="w-full pl-12 pr-10 py-3.5 rounded-xl text-sm font-semibold text-mc-dark placeholder-mc-muted/50 outline-none transition-all"
-            style={{ background: '#f5f3ff', border: '2px solid #ddd6fe' }}
+            className="w-full pl-12 pr-10 py-3.5 rounded-xl text-sm font-semibold outline-none transition-all input-search"
+            style={{
+              background: '#fff',
+              border: '2px solid #ddd6fe',
+              color: '#111',
+            }}
             onFocus={e  => (e.target.style.borderColor = '#5b21b6')}
             onBlur={e   => (e.target.style.borderColor = '#ddd6fe')}
           />

@@ -1,14 +1,8 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-const transporter = nodemailer.createTransport({
-  host:   process.env.SMTP_HOST || 'smtp.gmail.com',
-  port:   Number(process.env.SMTP_PORT) || 587,
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const FROM = 'MatchCard <onboarding@resend.dev>';
 
 const base = (content) => `
 <!DOCTYPE html>
@@ -46,9 +40,9 @@ const base = (content) => `
 export async function sendVerificationEmail(to, token) {
   const url = `${process.env.CLIENT_URL}/verify-email/${token}`;
 
-  await transporter.sendMail({
-    from:    `"MatchCard" <${process.env.SMTP_USER}>`,
-    to,
+  await resend.emails.send({
+    from:    FROM,
+    to:      [to],
     subject: '✉️ Confirma tu cuenta en MatchCard',
     html: base(`
       <h2 style="margin:0 0 12px;color:#1e1b4b;font-size:22px;font-weight:900;">
@@ -76,9 +70,9 @@ export async function sendVerificationEmail(to, token) {
 export async function sendPasswordResetEmail(to, token) {
   const url = `${process.env.CLIENT_URL}/reset-password/${token}`;
 
-  await transporter.sendMail({
-    from:    `"MatchCard" <${process.env.SMTP_USER}>`,
-    to,
+  await resend.emails.send({
+    from:    FROM,
+    to:      [to],
     subject: '🔐 Recupera tu contraseña de MatchCard',
     html: base(`
       <h2 style="margin:0 0 12px;color:#1e1b4b;font-size:22px;font-weight:900;">

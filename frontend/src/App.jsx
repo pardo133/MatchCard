@@ -41,6 +41,21 @@ function AuthSync() {
   return null;
 }
 
+function ThemeSync() {
+  const isPremium = useUserStore(state => state.user?.isPremium);
+
+  useEffect(() => {
+    if (isPremium) {
+      document.body.classList.add('pro-theme');
+    } else {
+      document.body.classList.remove('pro-theme');
+    }
+    return () => document.body.classList.remove('pro-theme');
+  }, [isPremium]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -58,6 +73,7 @@ export default function App() {
           }}
         />
         <AuthSync />
+        <ThemeSync />
         <Navbar />
         <Routes>
           

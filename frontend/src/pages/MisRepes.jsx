@@ -88,7 +88,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
               padding: '14px 5px 5px',
             }}>
               <p style={{
-                color: '#fff', fontSize: Math.round(width * 0.095), fontWeight: 900,
+                color: '#fff', fontSize: Math.round(width * 0.125), fontWeight: 900,
                 textAlign: 'center', lineHeight: 1.1,
                 overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                 textShadow: '0 1px 4px rgba(0,0,0,0.9)',
@@ -127,7 +127,7 @@ function CartaCromo({ cromo, seleccionada, esNueva, onSelect, width = 95 }) {
             
             <div style={{ width: '100%', textAlign: 'center', zIndex: 1 }}>
               <p style={{
-                color: '#fff', fontSize: Math.round(width * 0.095), fontWeight: 900,
+                color: '#fff', fontSize: Math.round(width * 0.125), fontWeight: 900,
                 lineHeight: 1.1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                 textShadow: '0 1px 4px rgba(0,0,0,0.8)',
               }}>{cromo.nombre}</p>
@@ -282,8 +282,8 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
           <label className="block text-xs font-bold text-white/60 mb-1">Sección / Colección <span className="text-red-400">*</span></label>
           <input list="sec-list" placeholder="Ej: Pokémon TCG, LaLiga 2024…"
             value={form.seccion} onChange={e => setF('seccion', e.target.value)}
-            className="w-full rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 transition-all"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }} />
+            className="w-full rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 transition-all"
+            style={{ background: '#fff', border: '1px solid rgba(255,255,255,0.3)' }} />
           <datalist id="sec-list">
             {seccionesExistentes.map(s => <option key={s} value={s} />)}
           </datalist>
@@ -294,8 +294,8 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
           <label className="block text-xs font-bold text-white/60 mb-1">Nombre del cromo <span className="text-red-400">*</span></label>
           <input placeholder="Ej: Pikachu, Messi, Goku…"
             value={form.nombre} onChange={e => setF('nombre', e.target.value)}
-            className="w-full rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 transition-all"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }} />
+            className="w-full rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 transition-all"
+            style={{ background: '#fff', border: '1px solid rgba(255,255,255,0.3)' }} />
         </div>
 
         
@@ -304,8 +304,8 @@ function FormAnadir({ form, setF, onSubmit, loading, fotoPreview, fotoRef, onFot
             <label className="block text-xs font-bold text-white/60 mb-1">Número <span className="text-white/30">(opcional)</span></label>
             <input type="number" min="1" placeholder="025"
               value={form.numero} onChange={e => setF('numero', e.target.value)}
-              className="w-full rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none"
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }} />
+              className="w-full rounded-xl px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+              style={{ background: '#fff', border: '1px solid rgba(255,255,255,0.3)' }} />
           </div>
           <div>
             <label className="block text-xs font-bold text-white/60 mb-1">Rareza <span className="text-white/30">(opcional)</span></label>
@@ -598,8 +598,8 @@ export default function MisRepes() {
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
                 <input placeholder="Buscar cromo..."
                   value={busqueda} onChange={e => setBusqueda(e.target.value)}
-                  className="w-full pl-8 pr-3 py-2 rounded-xl text-xs text-white placeholder-white/25 focus:outline-none focus:ring-2 focus:ring-yellow-400/30"
-                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                  className="w-full pl-8 pr-3 py-2 rounded-xl text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/30"
+                  style={{ background: '#fff', border: '1px solid rgba(255,255,255,0.3)' }} />
               </div>
             </div>
 
@@ -624,7 +624,7 @@ export default function MisRepes() {
                         seleccionada={seleccionada?._id === cromo._id}
                         esNueva={recientes.has(cromo._id)}
                         onSelect={setSel}
-                        width={95}
+                        width={115}
                       />
                     );
                   })}
