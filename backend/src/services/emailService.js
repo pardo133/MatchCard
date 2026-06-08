@@ -1,6 +1,12 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend = null;
+function getResend() {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return _resend;
+}
 
 const FROM = 'MatchCard <onboarding@resend.dev>';
 
@@ -40,7 +46,7 @@ const base = (content) => `
 export async function sendVerificationEmail(to, token) {
   const url = `${process.env.CLIENT_URL}/verify-email/${token}`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from:    FROM,
     to:      [to],
     subject: '✉️ Confirma tu cuenta en MatchCard',
@@ -70,7 +76,7 @@ export async function sendVerificationEmail(to, token) {
 export async function sendPasswordResetEmail(to, token) {
   const url = `${process.env.CLIENT_URL}/reset-password/${token}`;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from:    FROM,
     to:      [to],
     subject: '🔐 Recupera tu contraseña de MatchCard',
