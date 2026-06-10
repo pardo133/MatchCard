@@ -2,7 +2,6 @@ import jwt    from 'jsonwebtoken';
 import crypto from 'crypto';
 import { User } from '../models/user.model.js';
 import {
-  sendVerificationEmail,
   sendPasswordResetEmail,
 } from '../services/emailService.js';
 
@@ -36,22 +35,15 @@ export async function register(req, res, next) {
       return res.status(409).json({ message: 'Email o username ya registrado' });
     }
 
-    const emailVerifyToken = randomToken();
-
     const user = await User.create({
       username,
       email,
       passwordHash:     password,
       ciudad,
       telefono:         telefono?.trim() || '',
-      emailVerifyToken,
-      isEmailVerified:  false,
+      isEmailVerified:  true,
       inventario: { repetidos: [], faltas: [] },
     });
-
-    sendVerificationEmail(email, emailVerifyToken).catch(err =>
-      console.error('[email] verify send failed:', err.message)
-    );
 
     res.status(201).json({ token: generateToken(user._id), user });
   } catch (error) {

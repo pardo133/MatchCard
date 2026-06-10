@@ -58,8 +58,8 @@ export default function Register() {
     try {
       const { data } = await axiosClient.post('/auth/register', form);
       setAuth(data.token, data.user);
-      toast.success('¡Cuenta creada! Revisa tu email para verificarla 📧', { duration: 6000 });
-      navigate('/verificar-email-pendiente');
+      toast.success(`¡Bienvenido, ${data.user.username}!`);
+      navigate('/repes');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Error al crear la cuenta');
     } finally {
